@@ -2,9 +2,17 @@
 Triple-brace {{{ }}} enables raw HTML injection.
 Only use with trusted data.
 
-# POWER Engine (Simplified)
-### Full: Page Observer with Extraction & Route
-A lightweight client-side web templating and routing engine.
+# POWER Engine
+
+**POWER** stands for **Page Observer with Extraction & Route**.
+
+POWER is a lightweight client-side runtime that observes navigation events,
+extracts page templates, injects props, and routes content efficiently
+without full page reloads.
+
+Unlike virtual-DOM frameworks, POWER works directly with native DOM
+fragments and page-scoped scripts for maximum control and performance.
+
 
 ## Features
 - Declarative routing
