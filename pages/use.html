@@ -1,0 +1,221 @@
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    background: #fdfdfd;
+    line-height: 1.6;
+}
+
+nav.sidebar {
+    width: 220px;
+    background: #2c3e50;
+    color: #ecf0f1;
+    height: 100vh;
+    position: fixed;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+nav.sidebar h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+nav.sidebar a {
+    display: block;
+    color: #bdc3c7;
+    text-decoration: none;
+    margin: 12px 0;
+    font-size: 0.95em;
+    transition: color 0.2s;
+}
+
+nav.sidebar a:hover {
+    color: #ffffff;
+}
+
+main.content {
+    margin-left: 240px;
+    padding: 50px 40px;
+    max-width: 900px;
+}
+
+h1, h2, h3 {
+    color: #38bdf8;;
+    margin-top: 1.5em;
+}
+
+section > h2 {
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+pre {
+    background: #ecf0f1;
+    color: #2c3e50;
+    padding: 20px;
+    overflow-x: auto;
+    border-radius: 6px;
+    font-size: 0.95em;
+    margin: 15px 0;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+section {
+    margin-bottom: 60px;
+}
+
+ul {
+    margin-left: 20px;
+}
+
+ul li {
+    margin-bottom: 8px;
+    color: rgba(16, 7, 138, 0.418);
+}
+p,span {
+    color: rebeccapurple;
+}
+</style>
+
+</head>
+<body>
+
+<nav class="sidebar">
+    <h2>Power⚡</h2>
+    <a href="#overview">Overview</a>
+    <a href="#constructor">Constructor</a>
+    <a href="#routes">Routes</a>
+    <a href="#template">Template Management</a>
+    <a href="#includes">Include Commands</a>
+    <a href="#scripts">Script Handling</a>
+    <a href="#load-page">Load Pages</a>
+    <a href="#example">Example Usage</a>
+    <a href="#errors">Error Handling</a>
+    <a data-meta-href="/">Back to Home</a>
+</nav>
+
+<main class="content">
+
+<section id="overview">
+    <h2>Overview</h2>
+    <p>
+        <strong>Power Engine</strong> is a lightweight JavaScript framework for building dynamic, modular Single Page Applications (SPAs).
+        It supports lazy loading of templates, property binding, inline commands, and per-page script execution.
+    </p>
+</section>
+
+<section id="constructor">
+    <h2>Constructor</h2>
+    <pre><code>const app = new App({
+    root: document.getElementById('app'),
+    routes: {...},
+    authenticate: {}
+});</code></pre>
+    <p>
+        <strong>Parameters:</strong>
+        <ul>
+            <li><strong>root:</strong> DOM element for rendering pages (default: document.body)</li>
+            <li><strong>routes:</strong> Object defining all app routes (href, path, optional props)</li>
+            <li><strong>authenticate:</strong> Optional authentication object (currently placeholder)</li>
+        </ul>
+    </p>
+</section>
+
+<section id="routes">
+    <h2>Routing</h2>
+    <p>Routes define pages of the SPA. Each route object must include:</p>
+    <pre><code>{
+    href: '/url',
+    path: '/file',
+    props: {...} // optional
+}</code></pre>
+    <p>Navigation uses <code>data-meta-href</code> attributes on clickable elements:</p>
+    <pre><code>&lt;a data-meta-href="/about"&gt;About&lt;/a&gt;</code></pre>
+</section>
+
+<section id="template">
+    <h2>Template Management</h2>
+    <h3>TemplateBuilder(routes)</h3>
+    <p>Fetches HTML templates, normalizes paths, converts them to <code>DocumentFragment</code> and stores them in a <code>Map</code>.</p>
+    <h3>PropsUpdater(page)</h3>
+    <p>Injects dynamic properties into templates:</p>
+    <ul>
+        <li>Text nodes: <code>{{prop}}</code></li>
+        <li>HTML content: <code>{{{prop}}}</code></li>
+        <li>Attributes: <code>src="{{image}}"</code></li>
+    </ul>
+</section>
+
+<section id="includes">
+    <h2>Include Commands</h2>
+    <p>Use <code>&lt;include&gt;</code> to load HTML fragments or CSS files:</p>
+    <pre><code>&lt;include type="html" path="/components/navbar.html"&gt;&lt;/include&gt;
+&lt;include type="css" path="/styles/main.css"&gt;&lt;/include&gt;</code></pre>
+<ul>
+    <li>type="html": Replaces <code>&lt;include&gt;</code> with the loaded HTML</li>
+    <li>type="css": Appends a <code>&lt;link&gt;</code> to document head</li>
+    <li>Supports nested includes recursively</li>
+</ul>
+</section>
+
+<section id="scripts">
+    <h2>Script Handling</h2>
+    <ul>
+        <li>Inline scripts are wrapped in self-invoking functions</li>
+        <li>External scripts are fetched as blob URLs</li>
+        <li>Scripts are executed only for the current page</li>
+    </ul>
+</section>
+
+<section id="load-page">
+    <h2>Load Pages</h2>
+    <p><code>LoadRequestedPage(key, root, pages)</code>:</p>
+    <ul>
+        <li>Loads a page by route href</li>
+        <li>Pushes state to browser history</li>
+        <li>Injects props and scripts</li>
+        <li>Falls back to <code>/404</code> if missing</li>
+    </ul>
+</section>
+
+<section id="example">
+    <h2>Example Usage</h2>
+    <pre><code>import App from './App.js';
+
+const app = new App({
+    root: document.getElementById('app'),
+    routes: {
+        '/': { path: '/pages/home.html' },
+        '/about': { path: '/pages/about.html', props: { title: 'About Us' } }
+    },
+});
+
+app.Run();</code></pre>
+<p>HTML for navigation:</p>
+<pre><code>&lt;nav&gt;
+  &lt;a data-meta-href="/"&gt;Home&lt;/a&gt;
+  &lt;a data-meta-href="/about"&gt;About&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;div id="app"&gt;&lt;/div&gt;</code></pre>
+</section>
+
+<section id="errors">
+    <h2>Error Handling</h2>
+    <p>
+        <span>Power Engine throws errors for:</span>
+        <ul>
+            <li>Missing or invalid routes</li>
+            <li>Missing <code>href</code> or <code>path</code></li>
+            <li>Invalid include attributes</li>
+            <li>Script loading failures</li>
+        </ul>
+        <span>Warnings appear in console for missing pages (404 fallback).</span>
+    </p>
+</section>

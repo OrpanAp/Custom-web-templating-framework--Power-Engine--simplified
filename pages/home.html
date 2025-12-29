@@ -1,0 +1,182 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body, html {
+        height: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+    }
+
+    /* Full-screen banner */
+    .banner {
+        height: 100vh;
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://source.unsplash.com/1600x900/?technology,abstract') no-repeat center center/cover;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        padding: 20px;
+    }
+
+    /* Floating nav */
+    nav.navbar {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(0,0,0,0.5);
+        padding: 10px 15px;
+        border-radius: 8px;
+    }
+
+    nav.navbar a {
+        color: #fff;
+        text-decoration: none;
+        margin-right: 15px;
+        font-weight: bold;
+        transition: color 0.2s;
+    }
+
+    nav.navbar a:hover {
+        color: #ffd700;
+    }
+
+    /* Welcome messages */
+    .banner h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+    }
+
+    .banner p {
+        font-size: 1.5em;
+        max-width: 600px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+    }
+
+    /* Neon animated CTA button */
+    .banner button {
+        margin-top: 40px;
+        padding: 15px 40px;
+        font-size: 1.1em;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: #fff;
+        background: transparent;
+        border: 2px solid #00f6ff;
+        border-radius: 999px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+
+        text-shadow:
+            0 0 5px #00f6ff,
+            0 0 15px #00f6ff;
+
+        box-shadow:
+            0 0 10px rgba(0, 246, 255, 0.6),
+            0 0 30px rgba(0, 246, 255, 0.4);
+
+        animation: neonPulse 2.5s infinite ease-in-out;
+        transition: transform 0.2s ease;
+    }
+
+    /* Hover lift */
+    .banner button:hover {
+        transform: translateY(-4px) scale(1.03);
+    }
+
+    /* Click */
+    .banner button:active {
+        transform: scale(0.97);
+    }
+
+    /* Animated glow */
+    @keyframes neonPulse {
+        0% {
+            box-shadow:
+                0 0 8px rgba(0, 246, 255, 0.6),
+                0 0 20px rgba(0, 246, 255, 0.4);
+        }
+        50% {
+            box-shadow:
+                0 0 16px rgba(0, 246, 255, 0.9),
+                0 0 40px rgba(0, 246, 255, 0.7);
+        }
+        100% {
+            box-shadow:
+                0 0 8px rgba(0, 246, 255, 0.6),
+                0 0 20px rgba(0, 246, 255, 0.4);
+        }
+    }
+
+    /* Neon sweep effect */
+    .banner button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 120%;
+        height: 100%;
+        background: linear-gradient(
+            120deg,
+            transparent,
+            rgba(0, 246, 255, 0.6),
+            transparent
+        );
+        animation: neonSweep 3s infinite;
+    }
+
+    @keyframes neonSweep {
+        0% { left: -120%; }
+        60% { left: 120%; }
+        100% { left: 120%; }
+    }
+
+    /* Keyboard focus */
+    .banner button:focus-visible {
+        outline: none;
+        box-shadow:
+            0 0 0 3px rgba(0, 246, 255, 0.4),
+            0 0 25px rgba(0, 246, 255, 0.8);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .banner h1 {
+            font-size: 2.2em;
+        }
+
+        .banner p {
+            font-size: 1.2em;
+        }
+
+        nav.navbar a {
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+        .banner button {
+            padding: 13px 32px;
+            font-size: 1em;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="banner">
+    <nav class="navbar">
+        <a data-meta-href="/">Home</a>
+        <a data-meta-href="/about">About</a>
+        <a data-meta-href="/use">Documentation</a>
+        <a data-meta-href="/demo-page">Demo</a>
+    </nav>
+    <h1>{{ msg }}</h1>
+    <p>Build modular, dynamic, and optimized single-page applications effortlessly with Power Engine.</p>
+    <button data-meta-href="/demo-page">Demo</button>
+</div>

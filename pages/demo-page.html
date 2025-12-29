@@ -1,0 +1,157 @@
+<!-- Redesigned Demo Page (Clean, Modern, Engine‑Friendly) -->
+
+<nav class="navbar">
+  <div class="nav-brand">POWER⚡ Demo</div>
+  <div class="nav-links">
+    <a data-meta-href="/">Home</a>
+    <a data-meta-href="/about">About</a>
+    <a data-meta-href="/use">Docs</a>
+    <a data-meta-href="/demo-page" class="active">Demo</a>
+    <a data-meta-href="/unknown">404</a>
+  </div>
+</nav>
+
+<main class="container">
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Demo Page</h1>
+    <p class="subtitle">Live rendering • State binding • Includes • Scripts</p>
+  </section>
+
+  <!-- User Card -->
+  <section class="card user-card">
+    <h3>User Context</h3>
+    <p class="muted">Injected via template state</p>
+
+    <div class="user-info">
+      <span class="label">Name</span>
+      <span class="value">{{ user.name }}</span>
+
+      <span class="label">Role</span>
+      <span class="value">{{ user.role }}</span>
+    </div>
+  </section>
+
+  <!-- Component Include -->
+  <section class="card">
+    <h3>HTML Include</h3>
+    <p class="muted">Rendered using &lt;include type="html"&gt;</p>
+    <include type="html" path="/components/message.html"></include>
+  </section>
+
+  <!-- Script Output -->
+  <section class="card" id="script-output">
+    <h3>Script Execution</h3>
+    <p class="muted">Inline + external scripts</p>
+  </section>
+</main>
+
+<style>
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #0b0f1a;
+  color: #e6e9f0;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  background: rgba(20, 25, 45, 0.9);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.nav-brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.nav-links a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #cfd6ff;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  opacity: 1;
+  color: #ffffff;
+}
+
+/* ---------- Layout ---------- */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.hero {
+  margin-bottom: 2rem;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.subtitle {
+  margin-top: 0.25rem;
+  color: #9aa4ff;
+  font-size: 0.95rem;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: linear-gradient(180deg, rgba(40,45,90,0.35), rgba(20,25,60,0.35));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.muted {
+  color: #9aa0c7;
+  font-size: 0.85rem;
+}
+
+/* ---------- User Card ---------- */
+.user-info {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  row-gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.label {
+  color: #aab0ff;
+  font-size: 0.85rem;
+}
+
+.value {
+  font-weight: 600;
+}
+</style>
+
+<script>
+  // Inline script demo (safe, observable)
+  console.log('Demo inline script executed');
+
+  const out = document.getElementById('script-output');
+  const msg = document.createElement('p');
+  msg.textContent = 'Inline script ran successfully. Check console for logs.';
+  out.appendChild(msg);
+</script>
+
+<!-- External Script -->
+<script src="/pages/test.js"></script>
