@@ -3,7 +3,7 @@ Triple-brace {{{ }}} enables raw HTML injection.
 Only use with trusted data.
 
 # POWER Engine (Simplified)
-
+###Full: Page Observer with Extraction & Route
 A lightweight client-side web templating and routing engine.
 
 ## Features
