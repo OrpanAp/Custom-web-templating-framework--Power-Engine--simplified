@@ -242,9 +242,14 @@ class App {
             if(src) {
                 /* External js */
                 if(typeof src !== 'string') throw new Error(`Type Error: Unknown type of: "src"`);
-                
+
+                static BASE_PATH = (() => {
+                    const parts = location.pathname.split('/');
+                    return parts.length > 2 ? `/${parts[1]}/` : '/';
+                })();
+
                 const normalizedPath = this.NormalizeFilePath(src); 
-                const res = await fetch(normalizedPath);
+                const res = await fetch(BASE_PATH  + normalizedPath);
                 if(!res.ok) throw new Error(`Error: Failed to load script: ${src} with status: ${res.status}`);
 
                 jsText = await res.text();
