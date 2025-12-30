@@ -1,4 +1,4 @@
-import App from "./Custom-web-templating-framework--Power-Engine--simplified/App.js";
+import App from "./App.js";
 
 const app = new App({
     root: document.getElementById("app"),
