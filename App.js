@@ -243,7 +243,7 @@ class App {
                 /* External js */
                 if(typeof src !== 'string') throw new Error(`Type Error: Unknown type of: "src"`);
                 
-                const res = await fetch(src);
+                const res = await fetch(this.NormalizeFilePath(src));
                 if(!res.ok) throw new Error(`Error: Failed to load script: ${src} with status: ${res.status}`);
 
                 jsText = await res.text();
