@@ -31,7 +31,7 @@ const app = new App({
         },
         "404": {
             href: "/404",
-            path: "pages/notfound.html"
+            path: "./pages/notfound.html"
         }
     },
 
