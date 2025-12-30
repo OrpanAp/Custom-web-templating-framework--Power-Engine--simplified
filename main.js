@@ -1,4 +1,4 @@
-import App from "./App.js";
+import App from "./Custom-web-templating-framework--Power-Engine--simplified/App.js";
 
 const app = new App({
     root: document.getElementById("app"),
@@ -6,22 +6,22 @@ const app = new App({
     routes: {
         "home": {
             href: "/",
-            path: "/pages/home.html",
+            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/home.html",
             props: {
                 msg: 'Welcome to Power Engine ⚡(1.0)'
             }
         },
         "about": {
             href: "/about",
-            path: "/pages/about.html"
+            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/about.html"
         },
         "use": {
             href: "/use",
-            path: "/pages/use.html"
+            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/use.html"
         },
         "demo": {
             href: "/demo-page",
-            path: "/pages/demo-page.html",
+            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/demo-page.html",
             props: {
                 user: {
                     name: "Alex",
@@ -31,7 +31,7 @@ const app = new App({
         },
         "404": {
             href: "/404",
-            path: "/pages/notfound.html"
+            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/notfound.html"
         }
     },
 
