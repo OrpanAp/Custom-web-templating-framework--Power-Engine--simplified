@@ -1,0 +1,134 @@
+<style>
+    /* Reset & base */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    html, body {
+        height: 100%;
+        font-family: 'Poppins', sans-serif;
+        background: #0f0f0f;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    /* Container */
+    .container {
+        text-align: center;
+        z-index: 1;
+    }
+
+    /* Animated 404 */
+    .error-code {
+        font-size: 12rem;
+        font-weight: 900;
+        color: #ff3d81;
+        position: relative;
+        animation: flicker 1.5s infinite;
+        letter-spacing: 10px;
+    }
+
+    @keyframes flicker {
+        0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+        20%, 22%, 24%, 55% { opacity: 0.4; }
+    }
+
+    /* Message */
+    .message {
+        font-size: 1.8rem;
+        color: #aaa;
+        margin-top: 20px;
+    }
+
+    /* Home Button */
+    .home-btn {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 14px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #0f0f0f;
+        background: #ff3d81;
+        border-radius: 50px;
+        text-decoration: none;
+        box-shadow: 0 5px 15px rgba(255, 61, 129, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .home-btn:hover {
+        background: #fff;
+        color: #ff3d81;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 61, 129, 0.6);
+    }
+
+    /* Neon line effect */
+    .error-code::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 10px;
+        background: linear-gradient(to right, #ff3d81, #ff9d3d, #3dffb5);
+        bottom: 0;
+        left: 0;
+        filter: blur(8px);
+        opacity: 0.7;
+    }
+
+    /* Floating particles */
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #ff3d81, #3dffb5);
+        animation: float 10s infinite linear;
+        opacity: 0.6;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(100vh) translateX(0); opacity: 0.6; }
+        50% { opacity: 1; }
+        100% { transform: translateY(-100vh) translateX(50vw); opacity: 0; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .error-code { font-size: 6rem; letter-spacing: 5px; }
+        .message { font-size: 1.2rem; }
+        .home-btn { font-size: 1rem; padding: 12px 25px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Floating particles -->
+<div id="particles"></div>
+
+<div class="container">
+    <div class="error-code">404</div>
+    <div class="message">Oops! The page you are looking for does not exist.</div>
+    <a class="home-btn" data-meta-href="/">Go Back Home</a>
+</div>
+
+<script>
+    // Create floating particles
+    const particlesContainer = document.getElementById('particles');
+    const colors = ['#ff3d81', '#3dffb5', '#ff9d3d'];
+    const particleCount = 25;
+
+    for(let i=0; i<particleCount; i++){
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        const size = Math.random() * 15 + 5;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = Math.random() * window.innerWidth + 'px';
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.animationDuration = 5 + Math.random() * 10 + 's';
+        particle.style.animationDelay = Math.random() * 5 + 's';
+        particlesContainer.appendChild(particle);
+    }
+</script>
