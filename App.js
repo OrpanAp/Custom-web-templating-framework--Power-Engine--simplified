@@ -29,7 +29,7 @@ class App {
             if(typeof route.href !== 'string') throw new Error(`Type Error: Required route.href type of: "string"`);
             if(typeof route.path !== 'string') throw new Error(`Type Error: Required route.path type of: "string"`);
             
-            const href = this.PathStrNormalizer(route.href);
+            const href = this.NormalizeRoute(route.href);
             const html = await this.GetHtml(route.path);
             const fragment = await this.CopyChildNodesAsFragment(html);
 
@@ -48,7 +48,7 @@ class App {
     }
 
     static async GetHtml(path) {
-        path = this.PathStrNormalizer(path);
+        path = this.NormalizeFilePath(path);
 
         const res = await fetch(path);
         if(!res.ok) throw new Error(`Failed to load path: ${path} with status: ${res.status}`);
@@ -70,9 +70,14 @@ class App {
         return fragment;
     }
 
-    static PathStrNormalizer(path) {
+    static NormalizeRoute(path) {
         return "/" + path.replace(/\/+/g, "/").replace(/^\/|\/$/g, "");
     }
+
+    static NormalizeFilePath(path) {
+        return path.replace(/\/+/g, "/").replace(/^\/+/, "");
+    }
+
 
     static async IdentifyInlineCommands(pages) {
         if(!pages || pages.size === 0) return;
@@ -97,7 +102,7 @@ class App {
             if(typeof type !== 'string') throw new Error(`Type Error: Unknown type: "type"`);
             if(typeof path !== 'string') throw new Error(`Type Error: Unknown type: "path"`);
 
-            const normalizedPath = this.PathStrNormalizer(path);
+            const normalizedPath = this.NormalizeFilePath(path);
             
             if(type === 'html') {
                 const html = await this.GetHtml(normalizedPath);
@@ -294,7 +299,9 @@ class App {
             return;
         }
 
-        history.pushState({}, "", key);
+        if (location.pathname !== key) {
+            history.pushState({}, "", key);
+        }
 
         /* Replace all props with actual data */
         const fragment = (await this.PropsUpdater(page)) || page.fragment.cloneNode(true); /* Now page keeps record of scripts to inside template */
