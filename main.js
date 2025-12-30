@@ -31,7 +31,7 @@ const app = new App({
         },
         "404": {
             href: "/404",
-            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/notfound.html"
+            path: "Custom-web-templating-framework--Power-Engine--simplified/pages/notfound.html"
         }
     },
 
