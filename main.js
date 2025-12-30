@@ -6,22 +6,22 @@ const app = new App({
     routes: {
         "home": {
             href: "/",
-            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/home.html",
+            path: "./pages/home.html",
             props: {
                 msg: 'Welcome to Power Engine ⚡(1.0)'
             }
         },
         "about": {
             href: "/about",
-            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/about.html"
+            path: "./pages/about.html"
         },
         "use": {
             href: "/use",
-            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/use.html"
+            path: "./pages/use.html"
         },
         "demo": {
             href: "/demo-page",
-            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/demo-page.html",
+            path: "./pages/demo-page.html",
             props: {
                 user: {
                     name: "Alex",
@@ -31,7 +31,7 @@ const app = new App({
         },
         "404": {
             href: "/404",
-            path: "./Custom-web-templating-framework--Power-Engine--simplified/pages/notfound.html"
+            path: "./pages/notfound.html"
         }
     },
 
