@@ -29,7 +29,7 @@ Using POWER Engine is easy.
 
 Inject into HTML:
 ```html
-<Include type="html/css?" path="/" />
+<Include type="html/css?" path="/"></include>
 ```
 
 Script inside HTML:
