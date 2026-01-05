@@ -31,10 +31,13 @@ Constractor:
 ```js
 const app = new App({
   routes:{
-    '/':{
+    'home':{
       href:'/',
       path:'/',
       props:{},
+     },
+     'about':{},
+     ............,
   }
 });
 ```
