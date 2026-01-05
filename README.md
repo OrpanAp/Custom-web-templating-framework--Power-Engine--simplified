@@ -73,7 +73,7 @@ Props as text:
 ```js
 new App({
   routes: {
-    props: { value: "Hello World!" }
+    '/':{ props: { value: "Hello World!" }}
   }
 });
 ```
@@ -86,7 +86,7 @@ Props as HTML:
 ```js
 new App({
   routes: {
-    props: { value: "<h1>Hello World!</h1>" }
+    '/':{ props: { value: "<h1>Hello World!</h1>" }}
   }
 });
 ```
