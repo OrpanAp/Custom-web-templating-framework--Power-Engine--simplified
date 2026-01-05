@@ -27,17 +27,17 @@ Designed to optimize runtime performance by:
 ## How to use POWER Engine
 Using POWER Engine is easy.
 
-Constractor:
+Constructor:
 ```js
 const app = new App({
-  routes:{
-    'home':{
-      href:'/',
-      path:'/',
-      props:{},
-     },
-     'about':{},
-     ............,
+  routes: {
+    home: {
+      href: "/",
+      path: "/",
+      props: {},
+    },
+    about: {},
+    // ...
   }
 });
 ```
