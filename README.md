@@ -27,6 +27,18 @@ Designed to optimize runtime performance by:
 ## How to use POWER Engine
 Using POWER Engine is easy.
 
+Constractor:
+```js
+const app = new App({
+  routes:{
+    '/':{
+      href:'/',
+      path:'/',
+      props:{},
+  }
+});
+```
+
 Inject into HTML:
 ```html
 <Include type="html/css?" path="/"></include>
@@ -72,18 +84,6 @@ Props as HTML:
 new App({
   routes: {
     props: { value: "<h1>Hello World!</h1>" }
-  }
-});
-```
-
-Constractor:
-```js
-const app = new App({
-  routes:{
-    '/':{
-      href:'/',
-      path:'/',
-      props:{},
   }
 });
 ```
