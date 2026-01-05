@@ -1,18 +1,14 @@
 ⚠️ SECURITY NOTE  
-Triple-brace {{{ }}} enables raw HTML injection.
+Triple-brace `{{{ }}}` enables raw HTML injection.  
 Only use with trusted data.
 
 # POWER Engine
 
 **POWER** stands for **Page Observer with Extraction & Route**.
 
-POWER is a lightweight client-side runtime that observes navigation events,
-extracts page templates, injects props, and routes content efficiently
-without full page reloads.
+POWER is a lightweight client-side runtime that observes navigation events, extracts page templates, injects props, and routes content efficiently without full page reloads.
 
-Unlike virtual-DOM frameworks, POWER works directly with native DOM
-fragments and page-scoped scripts for maximum control and performance.
-
+Unlike virtual-DOM frameworks, POWER works directly with native DOM fragments and page-scoped scripts for maximum control and performance.
 
 ## Features
 - Declarative routing
@@ -28,8 +24,61 @@ Designed to optimize runtime performance by:
 - Executing page-scoped scripts
 - Avoiding global re-renders
 
+## How to use POWER Engine
+Using POWER Engine is easy.
+
+Inject into HTML:
+```html
+<Include type="html/css?" path="/" />
+```
+
+Script inside HTML:
+```html
+<script>
+  (() => { /* logic */ })();
+</script>
+```
+
+```html
+<script type="module">
+  (() => { /* logic */ })();
+</script>
+```
+
+Script from external source:
+```html
+<script src=""></script>
+<script type="module" src=""></script>
+```
+
+Props as text:
+```Html
+<div>{{ value }}</div>
+```
+```js
+new App({
+  routes: {
+    props: { value: "Hello World!" }
+  }
+});
+```
+
+Props as HTML:
+```html
+<div>{{{ value }}}</div>
+```
+
+```js
+new App({
+  routes: {
+    props: { value: "<h1>Hello World!</h1>" }
+  }
+});
+```
+
 ## Status
 Experimental / Educational
 
 ## Preview
- **site is live at** https://orpanap.github.io/Custom-web-templating-framework--Power-Engine--simplified/
+Site is live at  
+https://orpanap.github.io/Custom-web-templating-framework--Power-Engine--simplified/
