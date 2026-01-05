@@ -76,7 +76,7 @@ new App({
 });
 ```
 
-Contractor:
+Constractor:
 ```js
 const app = new App({
   routes:{
