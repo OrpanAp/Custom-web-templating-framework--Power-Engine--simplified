@@ -76,6 +76,18 @@ new App({
 });
 ```
 
+Contractor:
+```js
+const app = new App({
+  routes:{
+    '/':{
+      href:'/',
+      path:'/',
+      props:{},
+  }
+});
+```
+
 ## Status
 Experimental / Educational
 
