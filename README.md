@@ -29,7 +29,7 @@ This makes POWER ideal for lightweight SPAs and performance-focused applications
 ## How to use POWER Engine
 Using POWER Engine is easy.
 
-**Routes**
+## Routes
 
 Identification:
 ```html
@@ -63,7 +63,7 @@ Execute:
 app.Run();
 ```
 
-**Dom**
+## Dom
 
 Inject into HTML:
 ```html
@@ -73,7 +73,7 @@ Inject into HTML:
 <Include type="css" path="/.css"></include>
 ```
 
-**Scripts**
+## Scripts
 
 Script inside HTML:
 ```html
@@ -94,7 +94,7 @@ Script from external source:
 <script type="module" src=""></script>
 ```
 
-**Props**
+## Props
 
 Props as text:
 ```Html
