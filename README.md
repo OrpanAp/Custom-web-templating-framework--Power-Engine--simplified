@@ -42,6 +42,11 @@ const app = new App({
 });
 ```
 
+Execute:
+```js
+app.Run();
+```
+
 Inject into HTML:
 ```html
 <Include type="html/css?" path="/"></include>
