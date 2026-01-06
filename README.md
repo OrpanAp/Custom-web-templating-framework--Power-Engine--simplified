@@ -24,6 +24,8 @@ Designed to optimize runtime performance by:
 - Executing page-scoped scripts
 - Avoiding global re-renders
 
+This makes POWER ideal for lightweight SPAs and performance-focused applications.
+
 ## How to use POWER Engine
 Using POWER Engine is easy.
 
