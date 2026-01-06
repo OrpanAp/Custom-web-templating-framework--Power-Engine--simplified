@@ -121,7 +121,7 @@ new App({
 });
 ```
 
-## What’s the difference between a vanilla <script> and a POWER <script>?
+## Vanilla <script> VS POWER <script>
 
 Have you ever faced an issue where a script tries to execute before the element even exists?
 
