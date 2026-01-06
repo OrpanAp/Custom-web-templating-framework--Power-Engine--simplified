@@ -96,6 +96,14 @@ new App({
 });
 ```
 
+## What’s the difference between a vanilla <script> and a POWER <script>?
+
+Have you ever faced an issue where a script tries to execute before the element even exists?
+
+With a vanilla <script>, this often happens because the script may run before the DOM is fully loaded, unless you manually handle it using defer, async, or DOMContentLoaded.
+
+A POWER <script>, on the other hand, executes after the element is rendered. It runs at the very end of the rendering process, ensuring the target elements already exist. POWER is aware of when and where the script should execute, so it runs in a controlled and predictable manner—unlike vanilla scripts.
+
 ## Status
 Experimental / Educational
 
