@@ -32,6 +32,10 @@ Using POWER Engine is easy.
 Identification:
 ```html
 <a data-meta-href="/"></a>
+<a data-meta-href="/about"></a>
+<a data-meta-href="/products"></a>
+<a data-meta-href="/services"></a>
+//....
 ```
 ```html
 <button data-meta-href="/"></button>
