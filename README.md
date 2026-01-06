@@ -29,6 +29,14 @@ This makes POWER ideal for lightweight SPAs and performance-focused applications
 ## How to use POWER Engine
 Using POWER Engine is easy.
 
+Identification:
+```html
+<a data-meta-href="/"></a>
+```
+```html
+<button data-meta-href="/"></button>
+```
+
 Constructor:
 ```js
 const app = new App({
