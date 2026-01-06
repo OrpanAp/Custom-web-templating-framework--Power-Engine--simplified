@@ -121,7 +121,7 @@ new App({
 });
 ```
 
-## Vanilla <script> VS POWER <script>
+## Vanilla <script> V/S POWER <script>
 
 Have you ever faced an issue where a script tries to execute before the element even exists?
 
