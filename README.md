@@ -48,11 +48,11 @@ Execute:
 ```js
 app.Run();
 ```
+
+Inject into HTML:
 ```html
 <Include type="html" path="/.html"></include>
 ```
-
-Inject into HTML:
 ```html
 <Include type="css" path="/.css"></include>
 ```
