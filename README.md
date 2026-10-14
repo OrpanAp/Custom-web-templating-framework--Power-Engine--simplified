@@ -50,6 +50,7 @@ This repository also contains the live documentation website for P.O.W.E.R. 2.0.
 ├── index.html
 └── 404.html
 ```
+
 The source keeps one canonical HTML shell rather than repeating document boilerplate in every route. The build script generates the small root-level aliases required by GitHub Pages, so direct links and refreshes work without maintaining duplicate HTML documents. Page content, title, description, styles, and page scripts are managed by the runtime and fragments.
 
 ## 🚀 Run locally
