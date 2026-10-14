@@ -54,13 +54,14 @@ The source keeps one canonical HTML shell rather than repeating document boilerp
 
 ## 🚀 Run locally
 
-From the repository root, start a local HTTP server (templates use `fetch()`, so opening files with `file://` is not supported):
+From the repository root, build the deployable website and serve its output (templates use `fetch()`, so opening files with `file://` is not supported):
 
 ```bash
-python -m http.server 8000
+node scripts/build-site.mjs
+python -m http.server 8000 --directory _site
 ```
 
-Then open [http://localhost:8000](http://localhost:8000).
+Then open [http://localhost:8000](http://localhost:8000). The generated `_site/` directory is recreated on every build.
 
 ## 🧭 Configure routes
 
