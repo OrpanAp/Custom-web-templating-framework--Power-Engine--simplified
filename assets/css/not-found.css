@@ -17,13 +17,13 @@
     }
 
     /* Container */
-    .container {
+    .notfound-page .container {
         text-align: center;
         z-index: 1;
     }
 
     /* Animated 404 */
-    .error-code {
+    .notfound-page .error-code {
         font-size: 12rem;
         font-weight: 900;
         color: #ff3d81;
@@ -38,14 +38,14 @@
     }
 
     /* Message */
-    .message {
+    .notfound-page .message {
         font-size: 1.8rem;
         color: #aaa;
         margin-top: 20px;
     }
 
     /* Home Button */
-    .home-btn {
+    .notfound-page .home-btn {
         display: inline-block;
         margin-top: 30px;
         padding: 14px 30px;
@@ -59,7 +59,7 @@
         transition: all 0.3s ease;
     }
 
-    .home-btn:hover {
+    .notfound-page .home-btn:hover {
         background: #fff;
         color: #ff3d81;
         transform: translateY(-3px);
@@ -67,7 +67,7 @@
     }
 
     /* Neon line effect */
-    .error-code::after {
+    .notfound-page .error-code::after {
         content: '';
         position: absolute;
         width: 100%;
@@ -80,7 +80,7 @@
     }
 
     /* Floating particles */
-    .particle {
+    .notfound-page .particle {
         position: absolute;
         border-radius: 50%;
         background: linear-gradient(45deg, #ff3d81, #3dffb5);
@@ -96,7 +96,7 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-        .error-code { font-size: 6rem; letter-spacing: 5px; }
-        .message { font-size: 1.2rem; }
-        .home-btn { font-size: 1rem; padding: 12px 25px; }
+        .notfound-page .error-code { font-size: 6rem; letter-spacing: 5px; }
+        .notfound-page .message { font-size: 1.2rem; }
+        .notfound-page .home-btn { font-size: 1rem; padding: 12px 25px; }
     }
