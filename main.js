@@ -6,7 +6,7 @@ const app = new App({
     routes: {
         "home": {
             href: "/",
-            path: "./pages/home.html",
+            path: "./pages/power-site.html",
             props: {
                 msg: 'Welcome to Power Engine ⚡(1.0)'
             }
