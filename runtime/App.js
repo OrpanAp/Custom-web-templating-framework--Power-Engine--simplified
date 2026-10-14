@@ -50,9 +50,11 @@ class App {
 
     static async GetHtml(path) {
         path = this.NormalizeFilePath(path);
+        const baseUrl = new URL(this.BASE_PATH, location.origin);
+        const requestUrl = new URL(path, baseUrl).href;
 
-        const res = await fetch(path);
-        if(!res.ok) throw new Error(`Failed to load path: ${path} with status: ${res.status}`);
+        const res = await fetch(requestUrl);
+        if(!res.ok) throw new Error(`Failed to load path: ${requestUrl} with status: ${res.status}`);
 
         const html = await res.text();
         const div = document.createElement('div');
