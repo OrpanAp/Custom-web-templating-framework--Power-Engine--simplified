@@ -242,7 +242,8 @@ class App {
             routePath = '/' + routePath.slice(base.length);
         }
 
-        return this.NormalizeRoute(routePath);
+        const routeKey = this.NormalizeRoute(routePath);
+        return routeKey === '/index.html' ? '/' : routeKey;
     }
 
     static BuildLocationPath(key) {
