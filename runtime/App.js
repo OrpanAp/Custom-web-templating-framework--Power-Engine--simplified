@@ -182,6 +182,9 @@ class App {
         const elements = fragment.querySelectorAll('*');
 
         for (const element of elements) {
+            // Keep literal examples and executable source intact.
+            if (element.closest('pre, code, script, style, textarea')) continue;
+
             for (const attr of [...element.attributes]) {
                 if (!attr.value.includes('{{')) continue;
 
@@ -217,6 +220,9 @@ class App {
 
         // 2️⃣ Process collected nodes safely
         for (const textNode of textNodes) {
+            // Documentation snippets may intentionally contain {{ placeholders }}.
+            if (textNode.parentElement?.closest('pre, code, script, style, textarea')) continue;
+
             let text = textNode.nodeValue;
 
             // HTML injection {{{ prop }}}
