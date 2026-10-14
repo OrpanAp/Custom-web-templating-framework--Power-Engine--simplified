@@ -1,0 +1,34 @@
+<include type="css" path="assets/css/site.css"></include>
+<!-- database.html: page template rendered by POWER Engine App.js -->
+
+<div class="announce"><b>P.O.W.E.R. 2.0 DOCUMENTATION</b> &nbsp;·&nbsp; Practical guides for the framework</div><header><div class="shell topnav"><a class="brand" href="index.html" data-meta-href="/"><span class="mark">ϟ</span><span>P.O.W.E.R.<small>PROGRESSIVELY OPTIMIZED WEB ENGINE</small></span></a><nav class="toplinks"><a href="index.html" data-meta-href="/">Home</a><a href="docs.html" data-meta-href="/docs.html">Documentation</a><a href="https://github.com/OrpanAp/power-2.0" target="_blank" rel="noreferrer">Source ↗</a></nav><button class="menu" id="menu" aria-expanded="false">☰ Menu</button></div></header><div class="shell layout"><aside class="side" id="sidebar"><div class="side-title">Start here</div><a href="docs.html" data-meta-href="/docs.html" class="">Documentation</a><a href="quick-start.html" data-meta-href="/quick-start.html" class="">Quick start</a><a href="architecture.html" data-meta-href="/architecture.html" class="">Architecture</a><a href="routing.html" data-meta-href="/routing.html" class="">Routing & middleware</a><a href="database.html" data-meta-href="/database.html" class="active">Database & models</a><a href="security.html" data-meta-href="/security.html" class="">Security & auth</a><a href="cli.html" data-meta-href="/cli.html" class="">CLI reference</a><a href="configuration.html" data-meta-href="/configuration.html" class="">Configuration</a><a href="deployment.html" data-meta-href="/deployment.html" class="">Deployment</a></aside><main class="article"><div class="crumb">Documentation / Database & models</div><div class="pill">POWER 2.0 · NODE.JS ≥ 22.13</div><h1>Database & models</h1><p class="intro">Configure database connections, write parameterized queries, define models, and manage schema migrations.</p><h2>Connection URLs</h2><p>SQLite is the default for local development. Set <code>DB_URL</code> in your environment file to configure a connection.</p><pre><code>DB_URL=sqlite:storage/power.sqlite
+# PostgreSQL
+DB_URL=postgres://USER:URL_ENCODED_PASSWORD@127.0.0.1:5432/DATABASE
+# MySQL
+DB_URL=mysql://USER:URL_ENCODED_PASSWORD@127.0.0.1:3306/DATABASE
+# MariaDB
+DB_URL=mariadb://USER:URL_ENCODED_PASSWORD@127.0.0.1:3306/DATABASE</code></pre><p>URL-encode special characters in credentials, use TLS for remote databases, and run integration tests against the database server you plan to use.</p><h2>Parameterized queries</h2><pre><code>import { db } from '../core/database.js';
+
+const rows = await db.all(
+  'SELECT * FROM users WHERE role = ?',
+  ['admin']
+);
+const user = await db.get(
+  'SELECT * FROM users WHERE id = ?',
+  [5]
+);
+await db.run(
+  'UPDATE users SET name = ? WHERE id = ?',
+  ['Ada', 5]
+);</code></pre><div class="callout">Always bind values with placeholders. Do not concatenate user input into SQL. Table and column names should be validated using the framework's identifier helpers.</div><h2>Transactions</h2><pre><code>await db.transaction(async (tx) => {
+  await tx.run('UPDATE accounts SET balance = balance - ? WHERE id = ?', [10, 1]);
+  await tx.run('UPDATE accounts SET balance = balance + ? WHERE id = ?', [10, 2]);
+});</code></pre><p>Inside the transaction callback, use <code>tx</code> for database operations; mixing in the global connection can wait on the transaction lock.</p><h2>Migrations</h2><pre><code>node bin/power-cli.js make:migration create_posts_table
+node bin/power-cli.js db:migrate
+node bin/power-cli.js db:status
+node bin/power-cli.js db:rollback</code></pre><h2>Models</h2><pre><code>import { Model } from '../../core/model.js';
+
+export class Post extends Model {
+  static table = 'posts';
+  static fillable = ['title', 'body'];
+}</code></pre><p>Use the model API to create, find, list, update, and delete records. Test PostgreSQL and MySQL connections against your actual server before production use.</p><div class="callout"><strong>Project status:</strong> P.O.W.E.R. 2.0 is under active development. Verify integrations and follow the security and deployment guidance before production use.</div><p>Source documentation: <a class="inline" href="https://github.com/OrpanAp/power-2.0/tree/main/docs" target="_blank" rel="noreferrer">docs/ in the P.O.W.E.R. 2.0 repository ↗</a></p></main></div><footer class="site-footer"><div class="site-footer-inner"><div><div class="site-footer-brand">{{ frameworkName }} {{ version }}</div><div>Progressively Optimized Web Engine · Built for modular web applications.</div></div><nav class="site-footer-links" aria-label="Footer navigation"><a href="index.html" data-meta-href="/">Home</a><a href="docs.html" data-meta-href="/docs.html">POWER 2.0 docs</a><a href="power-1-docs.html" data-meta-href="/power-1-docs.html">POWER 1.0 source</a><a href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified" target="_blank" rel="noreferrer">GitHub ↗</a></nav></div></footer><script>const menu=document.getElementById('menu'),side=document.getElementById('sidebar');menu.addEventListener('click',()=>{const open=side.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'✕ Close':'☰ Menu'});document.addEventListener('keydown',e=>{if(e.key==='Escape'){side.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰ Menu'}});</script>
