@@ -24,21 +24,14 @@ This repository also contains the live documentation website for P.O.W.E.R. 2.0.
 
 ```text
 .
-├── .github/
-│   └── workflows/
-│       └── static1.yml          # Build verification and GitHub Pages deployment
+├── .github/workflows/static1.yml
 ├── assets/
-│   ├── css/
-│   │   ├── site.css             # Shared website styles
-│   │   └── not-found.css        # Scoped not-found styles
-│   └── js/
-│       └── pages/
-│           └── home.js          # External homepage script
-├── components/
-│   └── site-footer.html         # Shared footer using route props
+│   ├── css/site.css
+│   ├── css/not-found.css
+│   └── js/pages/home.js
+├── components/site-footer.html
 ├── pages/
-│   ├── home/
-│   │   └── index.html           # Landing-page fragment
+│   ├── home/index.html
 │   ├── docs/
 │   │   ├── index.html
 │   │   ├── quick-start.html
@@ -49,28 +42,15 @@ This repository also contains the live documentation website for P.O.W.E.R. 2.0.
 │   │   ├── database.html
 │   │   ├── routing.html
 │   │   ├── security.html
-│   │   └── power-1/
-│   │       └── index.html
-│   └── errors/
-│       └── not-found.html
-├── runtime/
-│   └── App.js                   # POWER Engine runtime
-├── main.js                      # Routes, metadata and route props
-├── index.html                   # Minimal application shell
-├── docs.html                    # Direct-link shell for GitHub Pages
-├── quick-start.html             # Direct-link shell for GitHub Pages
-├── cli.html                     # Direct-link shell for GitHub Pages
-├── deployment.html              # Direct-link shell for GitHub Pages
-├── architecture.html            # Direct-link shell for GitHub Pages
-├── configuration.html           # Direct-link shell for GitHub Pages
-├── database.html                # Direct-link shell for GitHub Pages
-├── routing.html                 # Direct-link shell for GitHub Pages
-├── security.html                # Direct-link shell for GitHub Pages
-├── power-1-docs.html            # Direct-link shell for GitHub Pages
-└── 404.html                     # GitHub Pages fallback shell
+│   │   └── power-1/index.html
+│   └── errors/not-found.html
+├── runtime/App.js
+├── scripts/build-site.mjs
+├── main.js
+├── index.html
+└── 404.html
 ```
-
-The small root-level HTML shells are intentional: GitHub Pages serves these files for direct visits and browser refreshes. They share one minimal structure; page content, title, description, styles, and page scripts are managed by the runtime and fragments.
+The source keeps one canonical HTML shell rather than repeating document boilerplate in every route. The build script generates the small root-level aliases required by GitHub Pages, so direct links and refreshes work without maintaining duplicate HTML documents. Page content, title, description, styles, and page scripts are managed by the runtime and fragments.
 
 ## 🚀 Run locally
 
