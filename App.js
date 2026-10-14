@@ -247,7 +247,7 @@ class App {
 
     static BuildLocationPath(key) {
         const routePath = this.NormalizeRoute(key);
-        const base = this.BASE_PATH === '/' ? '' : this.BASE_PATH.replace(/\\/$/, '');
+        const base = this.BASE_PATH === '/' ? '' : this.BASE_PATH.slice(0, -1);
         return routePath === '/' ? `${base}/` : `${base}${routePath}`;
     }
     
