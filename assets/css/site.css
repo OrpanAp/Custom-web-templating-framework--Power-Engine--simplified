@@ -16,3 +16,16 @@
 /* Shared components */
 .site-footer{border-top:1px solid var(--line);padding:28px 0 36px;color:var(--muted);font-size:11px}.site-footer-inner{width:min(1180px,calc(100% - 36px));margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}.site-footer-brand{color:var(--ink);font-weight:800}.site-footer-links{display:flex;gap:16px;flex-wrap:wrap}.site-footer a:hover{color:var(--ink)}@media(max-width:560px){.site-footer-inner{align-items:flex-start;flex-direction:column}}
 
+
+/* Lightweight syntax highlighting shared by landing and documentation pages. */
+pre.syntax-block{background:#0b1116!important;color:#d5e2dc!important;border-color:#29383b!important;tab-size:2}
+pre.syntax-block .syn-comment{color:#71868a}
+pre.syntax-block .syn-keyword{color:#d5a7ff}
+pre.syntax-block .syn-string{color:#b6df91}
+pre.syntax-block .syn-function{color:#8fd7ff}
+pre.syntax-block .syn-number{color:#f3c98b}
+pre.syntax-block .syn-tag{color:#8fd7ff}
+pre.syntax-block .syn-attr{color:#f3c98b}
+pre.syntax-block .syn-prompt{color:#c6ff5f;user-select:none}
+pre.syntax-block .syn-command{color:#e8f1ed}
+pre.syntax-block .syn-operator{color:#f0a7c5}
