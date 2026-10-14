@@ -10,6 +10,11 @@
 <body>
 <div id="app" aria-live="polite"></div>
 <noscript><main>Please enable JavaScript to use the P.O.W.E.R. website.</main></noscript>
-<script type="module" src="./main.js"></script>
+<script type="module">
+const repoName = "Custom-web-templating-framework--Power-Engine--simplified";
+const firstSegment = location.pathname.split("/").filter(Boolean)[0];
+const basePath = firstSegment === repoName ? `/${repoName}/` : "/";
+import(`${basePath}main.js`);
+</script>
 </body>
 </html>
