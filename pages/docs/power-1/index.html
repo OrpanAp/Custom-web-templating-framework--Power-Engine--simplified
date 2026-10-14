@@ -1,0 +1,76 @@
+<include type="css" path="assets/css/site.css"></include>
+<!-- power-1-docs.html: page template rendered by POWER Engine App.js -->
+
+<header><div class="shell nav" id="nav"><a class="brand" href="index.html" data-meta-href="/"><span class="mark">ϟ</span><span>P.O.W.E.R.<small>PROGRESSIVELY OPTIMIZED WEB ENGINE</small></span></a><div class="navlinks"><a href="index.html" data-meta-href="/">POWER home</a><a href="docs.html" data-meta-href="/docs.html">POWER 2.0 docs</a><a class="active" href="power-1-docs.html" data-meta-href="/power-1-docs.html">POWER 1.0 docs</a><a href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified" target="_blank" rel="noreferrer">Source ↗</a></div><a class="btn primary" href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified" target="_blank" rel="noreferrer">View POWER 1.0 ↗</a><button class="menu" id="menu" aria-expanded="false">☰ Menu</button></div></header>
+<section class="hero"><div class="shell"><div class="crumb">Documentation / Original framework / Source walkthrough</div><div class="tag"><i></i> VERSION 1.0 · CLIENT-SIDE JAVASCRIPT</div><h1>POWER Engine <span>1.0</span></h1><p class="intro">A source-oriented guide to the original POWER Engine: how App.js prepares HTML templates, resolves routes, injects props, processes includes, and executes page-scoped scripts.</p><div class="hero-meta"><span>📄 Browser-side SPA runtime</span><span>🧩 Native HTML, CSS & JavaScript</span><span>⚠️ Experimental / educational</span></div></div></section>
+<div class="shell layout"><aside class="sidebar" id="sidebar"><strong>On this page</strong><a href="#overview" data-meta-href="/">01 · Architecture</a><a href="#setup" data-meta-href="/">02 · Setup & entry point</a><a href="#routing" data-meta-href="/">03 · Routes & navigation</a><a href="#templates" data-meta-href="/">04 · Template loading</a><a href="#props" data-meta-href="/">05 · Props interpolation</a><a href="#includes" data-meta-href="/">06 · HTML & CSS includes</a><a href="#scripts" data-meta-href="/">07 · Page scripts</a><a href="#render" data-meta-href="/">08 · Render lifecycle</a><a href="#api" data-meta-href="/">09 · Core API</a><a href="#security" data-meta-href="/">10 · Security & limits</a><a href="#source" data-meta-href="/">Source files</a></aside>
+<article>
+<div class="callout"><strong>Version distinction:</strong> POWER 1.0 is a browser-side templating and SPA routing experiment. POWER 2.0 is a separate Node.js web framework. Their architecture and setup instructions are not interchangeable.</div>
+<section id="overview"><h2>01. Overview & architecture</h2><p>POWER stands for <strong>Page Observer with Extraction & Route</strong>. It uses native browser APIs rather than a virtual DOM or third-party router. The runtime fetches HTML files, converts their nodes into document fragments, prepares route data, and renders the selected page inside one root element.</p><pre><code>main.js
+  → new App()
+  → App.Run()
+  → TemplateBuilder(routes)
+  → IdentifyInlineCommands(pages)
+  → Route()
+  → LoadRequestedPage()
+  → props → page scripts → DOM</code></pre><p>Core browser APIs include <code>fetch()</code>, <code>Map</code>, <code>DocumentFragment</code>, <code>history.pushState()</code>, <code>popstate</code>, <code>TreeWalker</code>, <code>Blob</code>, and <code>URL.createObjectURL()</code>.</p></section>
+<section id="setup"><h2>02. Setup & entry point</h2><p>The demo entry point <code>main.js</code> imports <code>App</code> from <code>App.js</code>, configures a root element and route table, then calls <code>app.Run()</code>. Serve the files over HTTP because templates and scripts are loaded with <code>fetch()</code>; opening via <code>file://</code> may fail.</p><pre><code>import App from "./App.js";
+
+const app = new App({
+  root: document.getElementById("app"),
+  routes: {
+    home: {
+      href: "/",
+      path: "./pages/home.html",
+      props: { msg: "Welcome to Power Engine" }
+    },
+    about: {
+      href: "/about",
+      path: "./pages/about.html"
+    },
+    "404": {
+      href: "/404",
+      path: "./pages/notfound.html"
+    }
+  },
+  authenticate: {}
+});
+
+app.Run();</code></pre><p>For a quick local static server, run <code>python -m http.server 8000</code> from the project directory, then open <code>http://localhost:8000</code>.</p></section>
+<section id="routing"><h2>03. Routes & navigation</h2><p>Each route requires string fields <code>href</code> and <code>path</code>, with optional object-valued <code>props</code>. The runtime delegates clicks from elements marked with <code>data-meta-href</code>, prevents normal navigation, and loads the matching route. It also listens for <code>popstate</code> to support browser Back and Forward.</p><pre><code>&lt;a data-meta-href="/"&gt;Home&lt;/a&gt;
+&lt;a data-meta-href="/about"&gt;About&lt;/a&gt;
+&lt;button data-meta-href="/demo-page"&gt;Open demo&lt;/button&gt;</code></pre><p><code>NormalizeRoute()</code> normalizes route identifiers; <code>NormalizeFilePath()</code> separately normalizes resource paths.</p></section>
+<section id="templates"><h2>04. Template loading & cache</h2><p><code>TemplateBuilder(routes)</code> validates route definitions, fetches each HTML file through <code>GetHtml()</code>, converts its nodes into a <code>DocumentFragment</code>, and stores the fragment plus optional props in a <code>Map</code>. Rendering clones the cached fragment so the prepared template remains available for later navigation.</p><pre><code>pages.set("/about", {
+  fragment: DocumentFragment,
+  props: { title: "About" }
+});</code></pre></section>
+<section id="props"><h2>05. Props interpolation</h2><p><code>PropsUpdater(page)</code> clones a page fragment and replaces placeholders in text nodes and element attributes. Nested paths such as <code>user.name</code> are supported; missing values become empty strings.</p><pre><code>// Route props: { user: { name: "Alex" }, title: "Welcome" }
+
+// Template:
+&lt;h1&gt;{{ title }}&lt;/h1&gt;
+&lt;p&gt;Hello, {{ user.name }}&lt;/p&gt;
+&lt;img src="{{ avatarUrl }}" alt="Profile"&gt;</code></pre><p><code>{{ value }}</code> is ordinary interpolation; <code>{{{ value }}}</code> inserts raw HTML. The implementation also parses interpolated text containing a less-than character as HTML, so double braces are not a reliable HTML-escaping boundary.</p><div class="callout warn"><strong>Security note:</strong> Never insert untrusted values through triple braces. Sanitize or explicitly escape user-controlled content before rendering; the current implementation can expose HTML injection / XSS risks.</div></section>
+<section id="includes"><h2>06. HTML & CSS includes</h2><p>Use an <code>include</code> element to load reusable markup or a stylesheet. HTML includes are processed recursively, allowing nested components. Both <code>type</code> and <code>path</code> are required.</p><pre><code>&lt;include type="html" path="./components/navbar.html"&gt;&lt;/include&gt;
+
+&lt;include type="css" path="./styles/main.css"&gt;&lt;/include&gt;</code></pre><p>Implementation note: CSS duplicate detection compares an absolute link URL with a normalized path string, which may not match. Test repeated CSS includes and consider comparing resolved URLs.</p></section>
+<section id="scripts"><h2>07. Page-scoped scripts</h2><p><code>FindScriptsAndModuleThem()</code> collects script elements from a rendered fragment. Inline code is wrapped in an immediately invoked function; external files are fetched using a path based on <code>App.BASE_PATH</code>. Code is placed in a <code>Blob</code>, exposed through an object URL, and attached as a script for the current page.</p><pre><code>&lt;script&gt;
+  console.log("Page rendered");
+&lt;/script&gt;
+
+&lt;script src="./pages/demo.js"&gt;&lt;/script&gt;</code></pre><p>This is lifecycle organization, not a security sandbox. Verify resource paths when hosting below a domain root and review cleanup during repeated navigation.</p></section>
+<section id="render"><h2>08. Render lifecycle & 404</h2><p><code>LoadRequestedPage(key, root, pages)</code> looks up the route or falls back to the configured <code>/404</code> page, updates browser history, clones the fragment, applies props, extracts scripts, clears the root, inserts the new page, then executes its scripts. The fallback only works if a <code>/404</code> route is defined.</p><pre><code>Requested route
+  → route or /404
+  → update history
+  → clone fragment
+  → apply props
+  → collect scripts
+  → render page
+  → execute page scripts</code></pre></section>
+<section id="api"><h2>09. Core App API</h2><div class="api-grid"><div class="api"><code>new App({ root, routes, authenticate })</code><p>Stores configuration; root defaults to <code>document.body</code>.</p></div><div class="api"><code>Run()</code><p>Validates configuration, prepares templates and includes, and starts routing.</p></div><div class="api"><code>TemplateBuilder()</code><p>Loads and prepares route templates.</p></div><div class="api"><code>GetHtml()</code><p>Fetches an HTML template from its configured path.</p></div><div class="api"><code>PropsUpdater()</code><p>Injects route-specific values into text and attributes.</p></div><div class="api"><code>LoadIncludeCommands()</code><p>Expands reusable HTML and CSS includes.</p></div><div class="api"><code>Route()</code><p>Handles delegated navigation and browser history events.</p></div><div class="api"><code>LoadRequestedPage()</code><p>Renders the requested route or configured fallback.</p></div></div><p>The <code>authenticate</code> option is a placeholder; the source does not implement a complete authentication system.</p></section>
+<section id="security"><h2>10. Security & limitations</h2><ul><li>The README describes POWER Engine as experimental / educational, not hardened for production.</li><li>HTML interpolation is not safely escaped in all code paths; untrusted values can create XSS risk.</li><li>Authentication, authorization, route guards, and dynamic route parameters are not implemented in the documented source.</li><li>Page scripts use object URLs; review resource cleanup and behavior during repeated navigation.</li><li>Test deployment under subpaths, failed fetches, browser Back/Forward, nested includes, and the configured 404 route.</li></ul><div class="callout"><strong>Recommended use:</strong> Treat POWER 1.0 as a learning project or prototype. Review the source and address security gaps before exposing applications to untrusted input.</div></section>
+<section id="source"><h2>Source files & further reading</h2><p>This guide explains the original source at a high level. Use the repository as the definitive reference for implementation details.</p><div class="source-links"><a href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified/blob/master/README.md" target="_blank" rel="noreferrer">README.md ↗</a><a href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified/blob/master/App.js" target="_blank" rel="noreferrer">App.js ↗</a><a href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified/blob/master/main.js" target="_blank" rel="noreferrer">main.js ↗</a><a href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified" target="_blank" rel="noreferrer">Full repository ↗</a></div></section>
+</article></div>
+<footer class="site-footer"><div class="site-footer-inner"><div><div class="site-footer-brand">{{ frameworkName }} {{ version }}</div><div>Progressively Optimized Web Engine · Built for modular web applications.</div></div><nav class="site-footer-links" aria-label="Footer navigation"><a href="index.html" data-meta-href="/">Home</a><a href="docs.html" data-meta-href="/docs.html">POWER 2.0 docs</a><a href="power-1-docs.html" data-meta-href="/power-1-docs.html">POWER 1.0 source</a><a href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified" target="_blank" rel="noreferrer">GitHub ↗</a></nav></div></footer>
+<script>
+const nav=document.getElementById('nav'),menu=document.getElementById('menu');menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'✕ Close':'☰ Menu'});document.querySelectorAll('.navlinks a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰ Menu'}));const links=[...document.querySelectorAll('.sidebar a')],sections=links.map(a=>document.querySelector(a.getAttribute('href')));const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+entry.target.id))}})},{rootMargin:'-20% 0px -68% 0px'});sections.forEach(section=>section&&observer.observe(section));
+</script>
