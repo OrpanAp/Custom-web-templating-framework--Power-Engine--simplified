@@ -150,7 +150,7 @@ class App {
         });
 
 
-        await this.LoadRequestedPage('/', root, pages);
+        await this.LoadRequestedPage(location.pathname, root, pages);
     }
 
 
@@ -231,8 +231,25 @@ class App {
 
     static BASE_PATH = (() => {
         const parts = location.pathname.split('/');
-        return parts.length > 2 ? `/${parts[1]}/` : '/';
+        return parts.length > 2 && parts[1] ? `/${parts[1]}/` : '/';
     })();
+
+    static ResolveRouteKey(path) {
+        let routePath = String(path || '/');
+        const base = this.BASE_PATH;
+
+        if (base !== '/' && routePath.startsWith(base)) {
+            routePath = '/' + routePath.slice(base.length);
+        }
+
+        return this.NormalizeRoute(routePath);
+    }
+
+    static BuildLocationPath(key) {
+        const routePath = this.NormalizeRoute(key);
+        const base = this.BASE_PATH === '/' ? '' : this.BASE_PATH.replace(/\\/$/, '');
+        return routePath === '/' ? `${base}/` : `${base}${routePath}`;
+    }
     
     static async FindScriptsAndModuleThem(page) {
         const scripts = [];
@@ -298,23 +315,25 @@ class App {
 
     /* initial page */
     static async LoadRequestedPage(key, root, pages) {
-        const page = pages.get(key) ?? pages.get('/404');
+        const routeKey = this.ResolveRouteKey(key);
+        const page = pages.get(routeKey) ?? pages.get('/404');
 
         if (!page) {
             console.warn(`No page found for trigger: ${key}`);
             return;
         }
 
-        if (location.pathname !== key) {
-            history.pushState({}, "", key);
+        const targetPath = this.BuildLocationPath(routeKey);
+        if (location.pathname !== targetPath) {
+            history.pushState({}, "", targetPath);
         }
 
         /* Replace all props with actual data */
-        const fragment = (await this.PropsUpdater(page)) || page.fragment.cloneNode(true); /* Now page keeps record of scripts to inside template */
-        const scripts = await this.FindScriptsAndModuleThem(fragment) || null; /* detect script request */
+        const fragment = (await this.PropsUpdater(page)) || page.fragment.cloneNode(true);
+        const scripts = await this.FindScriptsAndModuleThem(fragment) || null;
         root.innerHTML = '';
         root.appendChild(fragment);
-        
+
         await this.LoadScriptForThisPage(scripts, root);
     }
 }
