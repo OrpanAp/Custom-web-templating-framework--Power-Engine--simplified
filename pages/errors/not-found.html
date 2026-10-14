@@ -1,0 +1,35 @@
+<include type="css" path="assets/css/site.css"></include>
+<include type="css" path="assets/css/not-found.css"></include>
+<div class="notfound-page">
+</head>
+<body>
+
+<!-- Floating particles -->
+<div id="particles"></div>
+
+<div class="container">
+    <div class="error-code">404</div>
+    <div class="message">Oops! The page you are looking for does not exist.</div>
+    <a class="home-btn" data-meta-href="/">Go Back Home</a>
+</div>
+
+<script>
+    // Create floating particles
+    const particlesContainer = document.getElementById('particles');
+    const colors = ['#ff3d81', '#3dffb5', '#ff9d3d'];
+    const particleCount = 25;
+
+    for(let i=0; i<particleCount; i++){
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        const size = Math.random() * 15 + 5;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = Math.random() * window.innerWidth + 'px';
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.animationDuration = 5 + Math.random() * 10 + 's';
+        particle.style.animationDelay = Math.random() * 5 + 's';
+        particlesContainer.appendChild(particle);
+    }
+</script>
+</div>
