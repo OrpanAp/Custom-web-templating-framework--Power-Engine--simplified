@@ -141,7 +141,19 @@ class App {
             const key = trigger.getAttribute('data-meta-href');
             if (!key) return;
 
+            const href = trigger.getAttribute('href') || '';
+            const hashIndex = href.indexOf('#');
+            const hash = hashIndex >= 0 ? href.slice(hashIndex + 1) : '';
+
             await this.LoadRequestedPage(key, root, pages);
+
+            if (hash) {
+                const target = document.getElementById(decodeURIComponent(hash));
+                if (target) target.scrollIntoView();
+                else window.scrollTo(0, 0);
+            } else {
+                window.scrollTo(0, 0);
+            }
         });
 
 
