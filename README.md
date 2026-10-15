@@ -1,79 +1,143 @@
-# ⚡ POWER Engine
+<!--
+  P.O.W.E.R. Engine — project documentation
+  Keep claims aligned with the current experimental runtime.
+-->
 
-**Page Observer with Extraction & Route** is a lightweight, dependency-free client-side runtime for modular single-page applications (SPAs), built with native browser APIs.
+<div align="center">
 
-This repository also contains the live documentation website for P.O.W.E.R. 2.0. The website is rendered by the original POWER 1.0 runtime in `runtime/App.js`.
+# ⚡ P.O.W.E.R. Engine
 
-> **Project status:** Experimental / educational. Review the source and documented security limitations before using the runtime in production.
+### Page Observer with Extraction & Route
 
-## ✨ Runtime features
+**A lightweight, dependency-free browser runtime for modular, route-driven web experiences.**
 
-- Declarative route configuration and route validation
-- HTML-fragment templates cached with `Map` and `DocumentFragment`
-- Route props and nested `{{ property.path }}` interpolation
-- Explicit raw HTML interpolation with `{{{ property.path }}}`
-- Reusable HTML includes and dynamically loaded CSS includes
-- Inline and external page scripts
-- Client-side navigation using `data-meta-href`
-- Browser Back/Forward handling through the History API
-- Route-specific document titles and meta descriptions
-- GitHub Pages subpath support and a configured not-found fallback
-- Zero third-party runtime dependencies
+Build reusable pages from HTML fragments, pass route data into templates, and navigate between views with native browser APIs.
 
-## 📁 Project structure
+<br />
+
+[🌐 Live Demo](https://orpanap.github.io/Custom-web-templating-framework--Power-Engine--simplified/) · [📦 Source Code](https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified) · [🚀 P.O.W.E.R. 2.0](https://github.com/OrpanAp/power-2.0)
+
+<br />
+
+![JavaScript](https://img.shields.io/badge/JavaScript-ES%20Modules-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111111)
+![Runtime](https://img.shields.io/badge/Runtime-Native%20Browser%20APIs-3178C6?style=for-the-badge&logo=googlechrome&logoColor=white)
+![Dependencies](https://img.shields.io/badge/Runtime%20Dependencies-0-16A34A?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Experimental-F59E0B?style=for-the-badge)
+
+</div>
+
+---
+
+## Overview
+
+P.O.W.E.R. Engine is a small client-side runtime built with native browser capabilities. It loads HTML fragments for configured routes, interpolates route-provided values, supports reusable HTML and CSS includes, and manages navigation without requiring a third-party runtime framework.
+
+This repository also contains the documentation website for **P.O.W.E.R. 2.0**, the separate Node.js framework. The documentation site itself uses the original **P.O.W.E.R. Engine 1.0** runtime in `runtime/App.js`.
+
+> **Project status:** Experimental / educational. This is a custom runtime, not a drop-in replacement for a mature production framework. Review the known limitations and security notes before using it with untrusted content or in production.
+
+## ✨ What it supports
+
+- **Route configuration** — map browser-facing URLs to HTML fragment files.
+- **Template interpolation** — insert route props with nested paths such as `{{ user.name }}`.
+- **Reusable includes** — load HTML components and CSS resources from templates.
+- **Client-side navigation** — navigate through `data-meta-href` and the History API.
+- **Browser history** — handle Back and Forward navigation.
+- **Page metadata** — update document titles and meta descriptions for configured routes.
+- **Template caching** — cache rendered page data with native `Map` and `DocumentFragment` APIs.
+- **Page scripts** — support inline scripts and external scripts referenced by a page fragment.
+- **GitHub Pages support** — generate root-level route aliases for direct links and page refreshes.
+- **No third-party runtime dependencies** — the runtime is implemented with browser APIs and JavaScript modules.
+
+## 🧭 How it works
+
+At a high level, the runtime follows this flow:
+
+1. **Configure routes** in `main.js`, including each route's URL, template path, metadata, and props.
+2. **Load templates** from the configured HTML fragment files.
+3. **Resolve includes and interpolation** to assemble the requested view.
+4. **Render the selected route** into the root element.
+5. **Handle navigation** and update the browser history and page metadata.
+
+The website is built from one canonical HTML shell and reusable fragments. The build script creates the deployable `_site/` directory and the small HTML aliases needed for direct routes on GitHub Pages.
+
+## 🗂️ Project structure
 
 ```text
 .
-├── .github/workflows/static1.yml
+├── .github/
+│   └── workflows/
+│       └── static1.yml
 ├── assets/
-│   ├── css/site.css
-│   ├── css/not-found.css
-│   └── js/pages/home.js
-├── components/site-footer.html
+│   ├── css/
+│   └── js/
+├── components/
+│   └── site-footer.html
 ├── pages/
-│   ├── home/index.html
+│   ├── home/
 │   ├── docs/
-│   │   ├── index.html
-│   │   ├── quick-start.html
-│   │   ├── cli.html
-│   │   ├── deployment.html
-│   │   ├── architecture.html
-│   │   ├── configuration.html
-│   │   ├── database.html
-│   │   ├── routing.html
-│   │   ├── security.html
-│   │   └── power-1/index.html
-│   └── errors/not-found.html
-├── runtime/App.js
-├── scripts/build-site.mjs
+│   └── errors/
+├── runtime/
+│   └── App.js
+├── scripts/
+│   └── build-site.mjs
 ├── main.js
 ├── index.html
 └── 404.html
 ```
 
-The source keeps one canonical HTML shell rather than repeating document boilerplate in every route. The build script generates the small root-level aliases required by GitHub Pages, so direct links and refreshes work without maintaining duplicate HTML documents. Page content, title, description, styles, and page scripts are managed by the runtime and fragments.
+| Path | Purpose |
+| --- | --- |
+| `runtime/App.js` | Core routing, template, and browser-runtime behavior |
+| `main.js` | Route definitions, page metadata, and route props |
+| `pages/` | HTML fragments for the home page and documentation |
+| `components/` | Reusable HTML fragments |
+| `assets/` | Stylesheets, scripts, and other static resources |
+| `scripts/build-site.mjs` | Builds the deployable website and route aliases |
+| `.github/workflows/static1.yml` | Builds and deploys the site to GitHub Pages |
 
 ## 🚀 Run locally
 
-From the repository root, build the deployable website and serve its output (templates use `fetch()`, so opening files with `file://` is not supported):
+### Requirements
+
+- [Node.js](https://nodejs.org/) with support for ES modules
+- Python 3, or another local static HTTP server
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified.git
+cd Custom-web-templating-framework--Power-Engine--simplified
+```
+
+### 2. Build the website
 
 ```bash
 node scripts/build-site.mjs
+```
+
+This generates the `_site/` directory. The build script recreates that directory each time it runs.
+
+### 3. Start a local server
+
+```bash
 python -m http.server 8000 --directory _site
 ```
 
-Then open [http://localhost:8000](http://localhost:8000). The generated `_site/` directory is recreated on every build.
+Open **http://localhost:8000** in your browser.
 
-## 🧭 Configure routes
+> Do not open `index.html` directly with a `file://` URL. The runtime loads templates using `fetch()`, so the site must be served over HTTP.
 
-Routes are defined in `main.js`. Each route can provide a URL, a template fragment, metadata, and interpolation props:
+## 🧩 Configure a route
+
+Routes are defined in `main.js`. A route can provide a public URL, a fragment path, metadata, and values for template interpolation.
 
 ```javascript
 {
     href: "/example.html",
     path: "./pages/docs/example.html",
     title: "Example — P.O.W.E.R.",
-    description: "A description used by search engines and browser metadata.",
+    description: "A short description for this page.",
     props: {
         frameworkName: "P.O.W.E.R.",
         version: "2.0"
@@ -81,55 +145,100 @@ Routes are defined in `main.js`. Each route can provide a URL, a template fragme
 }
 ```
 
-- `href` is the browser-facing route.
-- `path` points to a fragment, not a complete HTML document.
-- `title` and `description` update the document metadata on navigation.
-- `props` are interpolated into the fragment, including HTML loaded through components.
+| Property | Description |
+| --- | --- |
+| `href` | Browser-facing URL for the route |
+| `path` | Path to the HTML fragment used by the route |
+| `title` | Document title applied to the route |
+| `description` | Meta description applied to the route |
+| `props` | Data values available to the fragment's interpolation |
 
-## 🧩 Use template features
+Use paths and URLs that match your deployment setup, and test nested routes after building.
 
-**CSS include**
+## 🧱 Template examples
 
-```html
-<include type="css" path="assets/css/site.css"></include>
-```
+### Insert route data
 
-**Reusable HTML component**
-
-```html
-<include type="html" path="components/site-footer.html"></include>
-```
-
-**Route props**
+In a template fragment:
 
 ```html
 <h1>{{ pageTitle }}</h1>
 <p>Hello, {{ user.name }}</p>
 ```
 
-Use normal double braces for text. Triple braces insert raw HTML and must never be used with untrusted values. The current runtime is experimental and its interpolation pipeline is not a complete HTML sanitizer.
+The runtime resolves the placeholders using the route's props. Normal double braces are intended for text values.
 
-**Page scripts**
+### Include a stylesheet
 
-Inline scripts are executed with the rendered page. External scripts can be referenced from a fragment:
+```html
+<include type="css" path="assets/css/site.css"></include>
+```
+
+### Include a reusable HTML component
+
+```html
+<include type="html" path="components/site-footer.html"></include>
+```
+
+### Load page-specific JavaScript
 
 ```html
 <script src="assets/js/pages/example.js"></script>
 ```
 
-Keep page-specific behavior in the template or in its own file under `assets/js/pages/`.
+Keep page-specific behavior in a dedicated file under `assets/js/pages/` when practical.
+
+### Raw HTML interpolation
+
+Triple braces, such as `{{{ htmlContent }}}`, are available for raw HTML insertion. This bypasses ordinary text handling and **must not be used with untrusted or user-supplied values**. The current interpolation pipeline is not a complete HTML sanitizer.
 
 ## 🌐 Deployment
 
-Pushing to `master` runs `.github/workflows/static1.yml`. The workflow stages only the runtime, assets, templates, components, and required root HTML shells before publishing to GitHub Pages.
+The repository includes a GitHub Actions workflow at `.github/workflows/static1.yml`.
 
-## ⚠️ Known limitations
+When changes are pushed to the `master` branch, the workflow:
 
-- The `authenticate` constructor option is a placeholder, not a working authentication system.
-- Raw HTML interpolation can create XSS vulnerabilities when supplied untrusted content.
-- The runtime does not provide a full component lifecycle, route guards, dynamic route parameters, or a security sandbox for page scripts.
-- Test direct routes, refreshes, Back/Forward navigation, includes, and failed template loads before deploying changes.
+1. Checks out the repository.
+2. Builds the site with `node scripts/build-site.mjs`.
+3. Checks for required output files.
+4. Uploads the generated `_site/` directory.
+5. Deploys the artifact to GitHub Pages.
 
-## 📚 Related project
+To use GitHub Pages, make sure Pages is configured to deploy using **GitHub Actions** in the repository's settings. After a successful deployment, open the live demo link at the top of this README. If the link is not available yet, check the repository's **Actions** tab and **Settings → Pages**.
 
-P.O.W.E.R. 2.0 is the separate Node.js framework documented by this website: [OrpanAp/power-2.0](https://github.com/OrpanAp/power-2.0).
+## 🔐 Security and current limitations
+
+Please read these notes before using the runtime beyond a learning project:
+
+- **Authentication is not implemented.** The `authenticate` constructor option is currently a placeholder; it does not protect routes or users.
+- **Raw HTML can introduce XSS vulnerabilities.** Never interpolate untrusted values as raw HTML.
+- **No script sandbox.** Page scripts execute in the page context and are not isolated by a security boundary.
+- **Not a full application framework.** The runtime does not currently provide a complete component lifecycle, route guards, or dynamic route parameters.
+- **Test navigation and failure cases.** Verify direct URLs, refreshes, Back/Forward behavior, missing templates, includes, and script loading before deployment.
+
+Do not treat client-side route configuration as an authorization or access-control mechanism.
+
+## 🛣️ Suggested next steps
+
+- Add automated tests for routing, template interpolation, and include failures.
+- Add stricter validation and safer handling for template values.
+- Document the runtime's public API and supported route options.
+- Add a dedicated error-reporting strategy for failed template loads.
+- Clearly separate experimental runtime behavior from production security requirements.
+
+## 🔗 Related project
+
+**P.O.W.E.R. 2.0** is the separate Node.js framework documented by this website.
+
+- [P.O.W.E.R. 2.0 repository](https://github.com/OrpanAp/power-2.0)
+- [P.O.W.E.R. Engine documentation website](https://orpanap.github.io/Custom-web-templating-framework--Power-Engine--simplified/)
+
+---
+
+<div align="center">
+
+**Built with JavaScript and native browser APIs.**
+
+[Live Demo](https://orpanap.github.io/Custom-web-templating-framework--Power-Engine--simplified/) · [Repository](https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified)
+
+</div>
