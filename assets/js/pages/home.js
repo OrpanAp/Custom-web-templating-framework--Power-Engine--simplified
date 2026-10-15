@@ -1,1 +1,40 @@
-const sets={bash:'git clone https://github.com/OrpanAp/power-2.0.git\ncd power-2.0\ncp .env.example .env\nnode bin/power-cli.js serve',powershell:'git clone https://github.com/OrpanAp/power-2.0.git\nSet-Location power-2.0\nCopy-Item .env.example .env\nnode bin/power-cli.js serve'};const pre=document.getElementById('commands');document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));pre.textContent=sets[b.dataset.tab]}));let timer;function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>t.classList.remove('show'),1700)}async function copy(s){try{await navigator.clipboard.writeText(s);toast('Commands copied')}catch{toast('Select and copy the commands manually')}}document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>copy(b.dataset.copy)));document.querySelectorAll('[data-copy-target]').forEach(b=>b.addEventListener('click',()=>copy(document.getElementById(b.dataset.copyTarget).textContent)));
+const sets = {
+  bash: "git clone https://github.com/OrpanAp/power-2.0.git\ncd power-2.0\ncp .env.example .env\nnode bin/power-cli.js serve",
+  powershell:
+    "git clone https://github.com/OrpanAp/power-2.0.git\nSet-Location power-2.0\nCopy-Item .env.example .env\nnode bin/power-cli.js serve",
+};
+const pre = document.getElementById("commands");
+document.querySelectorAll("[data-tab]").forEach((b) =>
+  b.addEventListener("click", () => {
+    document
+      .querySelectorAll("[data-tab]")
+      .forEach((x) => x.classList.toggle("active", x === b));
+    pre.textContent = sets[b.dataset.tab];
+  }),
+);
+let timer;
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(timer);
+  timer = setTimeout(() => t.classList.remove("show"), 1700);
+}
+async function copy(s) {
+  try {
+    await navigator.clipboard.writeText(s);
+    toast("Commands copied");
+  } catch {
+    toast("Select and copy the commands manually");
+  }
+}
+document
+  .querySelectorAll("[data-copy]")
+  .forEach((b) => b.addEventListener("click", () => copy(b.dataset.copy)));
+document
+  .querySelectorAll("[data-copy-target]")
+  .forEach((b) =>
+    b.addEventListener("click", () =>
+      copy(document.getElementById(b.dataset.copyTarget).textContent),
+    ),
+  );

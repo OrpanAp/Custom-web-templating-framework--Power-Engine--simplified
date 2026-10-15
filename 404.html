@@ -1,20 +1,28 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b0e12">
-<meta name="description" content="P.O.W.E.R. — a modular web engine and Node.js framework.">
-<title>P.O.W.E.R. | Loading</title>
-</head>
-<body>
-<div id="app" aria-live="polite"></div>
-<noscript><main>Please enable JavaScript to use the P.O.W.E.R. website.</main></noscript>
-<script type="module">
-const repoName = "Custom-web-templating-framework--Power-Engine--simplified";
-const firstSegment = location.pathname.split("/").filter(Boolean)[0];
-const basePath = firstSegment === repoName ? `/${repoName}/` : "/";
-import(`${basePath}main.js`);
-</script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0e12" />
+    <meta
+      name="description"
+      content="P.O.W.E.R. — a modular web engine and Node.js framework."
+    />
+    <title>P.O.W.E.R. | Loading</title>
+  </head>
+  <body>
+    <div id="app" aria-live="polite"></div>
+    <noscript
+      ><main>
+        Please enable JavaScript to use the P.O.W.E.R. website.
+      </main></noscript
+    >
+    <script type="module">
+      const repoName =
+        "Custom-web-templating-framework--Power-Engine--simplified";
+      const firstSegment = location.pathname.split("/").filter(Boolean)[0];
+      const basePath = firstSegment === repoName ? `/${repoName}/` : "/";
+      import(`${basePath}main.js`);
+    </script>
+  </body>
 </html>

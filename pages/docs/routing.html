@@ -1,7 +1,80 @@
 <include type="css" path="assets/css/site.css"></include>
 <!-- routing.html: page template rendered by POWER Engine App.js -->
 
-<div class="announce"><b>P.O.W.E.R. 2.0 DOCUMENTATION</b> &nbsp;·&nbsp; Practical guides for the framework</div><header><div class="shell topnav"><a class="brand" href="index.html" data-meta-href="/"><span class="mark">ϟ</span><span>P.O.W.E.R.<small>PROGRESSIVELY OPTIMIZED WEB ENGINE</small></span></a><button class="menu" id="menu" aria-expanded="false">☰ Menu</button></div></header><div class="shell layout"><aside class="side" id="sidebar"><a href="index.html" data-meta-href="/">⌂ Home</a><details class="nav-group" open><summary>POWER 2.0</summary><div class="sub"><a href="docs.html" data-meta-href="/docs.html">Documentation</a><a href="quick-start.html" data-meta-href="/quick-start.html">Quick start</a><a href="architecture.html" data-meta-href="/architecture.html">Architecture</a><a href="routing.html" data-meta-href="/routing.html" class="active">Routing &amp; middleware</a><a href="database.html" data-meta-href="/database.html">Database &amp; models</a><a href="security.html" data-meta-href="/security.html">Security &amp; auth</a><a href="cli.html" data-meta-href="/cli.html">CLI reference</a><a href="configuration.html" data-meta-href="/configuration.html">Configuration</a><a href="deployment.html" data-meta-href="/deployment.html">Deployment</a><a class="src" href="https://github.com/OrpanAp/power-2.0" target="_blank" rel="noreferrer">Source ↗</a></div></details><details class="nav-group"><summary>POWER 1.0</summary><div class="sub"><a href="power-1-docs.html" data-meta-href="/power-1-docs.html">Documentation</a><a class="src" href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified" target="_blank" rel="noreferrer">Source ↗</a></div></details></aside><main class="article"><div class="crumb">Documentation / Routing & middleware</div><div class="pill">POWER 2.0 · NODE.JS ≥ 22.13</div><h1>Routing & middleware</h1><p class="intro">Build endpoints with HTTP methods, named parameters, middleware chains, and route groups.</p><h2>Define routes</h2><p>Route definitions live in <code>app/routes/*.js</code>. Handlers can be synchronous or async.</p><pre><code>export function webRoutes(app) {
+<div class="announce">
+  <b>P.O.W.E.R. 2.0 DOCUMENTATION</b> &nbsp;·&nbsp; Practical guides for the
+  framework
+</div>
+<header>
+  <div class="shell topnav">
+    <a class="brand" href="index.html" data-meta-href="/"
+      ><span class="mark">ϟ</span
+      ><span
+        >P.O.W.E.R.<small>PROGRESSIVELY OPTIMIZED WEB ENGINE</small></span
+      ></a
+    ><button class="menu" id="menu" aria-expanded="false">☰ Menu</button>
+  </div>
+</header>
+<div class="shell layout">
+  <aside class="side" id="sidebar">
+    <a href="index.html" data-meta-href="/">⌂ Home</a>
+    <details class="nav-group" open>
+      <summary>POWER 2.0</summary>
+      <div class="sub">
+        <a href="docs.html" data-meta-href="/docs.html">Documentation</a
+        ><a href="quick-start.html" data-meta-href="/quick-start.html"
+          >Quick start</a
+        ><a href="architecture.html" data-meta-href="/architecture.html"
+          >Architecture</a
+        ><a href="routing.html" data-meta-href="/routing.html" class="active"
+          >Routing &amp; middleware</a
+        ><a href="database.html" data-meta-href="/database.html"
+          >Database &amp; models</a
+        ><a href="security.html" data-meta-href="/security.html"
+          >Security &amp; auth</a
+        ><a href="cli.html" data-meta-href="/cli.html">CLI reference</a
+        ><a href="configuration.html" data-meta-href="/configuration.html"
+          >Configuration</a
+        ><a href="deployment.html" data-meta-href="/deployment.html"
+          >Deployment</a
+        ><a
+          class="src"
+          href="https://github.com/OrpanAp/power-2.0"
+          target="_blank"
+          rel="noreferrer"
+          >Source ↗</a
+        >
+      </div>
+    </details>
+    <details class="nav-group">
+      <summary>POWER 1.0</summary>
+      <div class="sub">
+        <a href="power-1-docs.html" data-meta-href="/power-1-docs.html"
+          >Documentation</a
+        ><a
+          class="src"
+          href="https://github.com/OrpanAp/Custom-web-templating-framework--Power-Engine--simplified"
+          target="_blank"
+          rel="noreferrer"
+          >Source ↗</a
+        >
+      </div>
+    </details>
+  </aside>
+  <main class="article">
+    <div class="crumb">Documentation / Routing & middleware</div>
+    <div class="pill">POWER 2.0 · NODE.JS ≥ 22.13</div>
+    <h1>Routing & middleware</h1>
+    <p class="intro">
+      Build endpoints with HTTP methods, named parameters, middleware chains,
+      and route groups.
+    </p>
+    <h2>Define routes</h2>
+    <p>
+      Route definitions live in <code>app/routes/*.js</code>. Handlers can be
+      synchronous or async.
+    </p>
+    <pre><code>export function webRoutes(app) {
   app.get('/', HomeController.index);
   app.post('/login', auth.requireGuest, authLimiter, AuthController.login);
   app.get('/users/:id', async (req, res) => {
@@ -9,10 +82,89 @@
     if (!user) return res.status(404).json({ error: 'not found' });
     res.json(User.serialize(user));
   });
-}</code></pre><p>Supported methods include <code>get</code>, <code>post</code>, <code>put</code>, <code>patch</code>, <code>delete</code>, <code>head</code>, <code>options</code>, and <code>all</code>. Named path parameters such as <code>/users/:id</code> are available on <code>req.params</code>.</p><h2>Middleware</h2><pre><code>app.use(securityHeaders(config));
+}</code></pre>
+    <p>
+      Supported methods include <code>get</code>, <code>post</code>,
+      <code>put</code>, <code>patch</code>, <code>delete</code>,
+      <code>head</code>, <code>options</code>, and <code>all</code>. Named path
+      parameters such as <code>/users/:id</code> are available on
+      <code>req.params</code>.
+    </p>
+    <h2>Middleware</h2>
+    <pre><code>app.use(securityHeaders(config));
 app.use('/admin', requireAdmin);
-app.post('/login', limiter, AuthController.login);</code></pre><p>Middleware either sends a response, calls <code>next()</code>, or passes an error with <code>next(err)</code>. Order matters: each middleware runs in sequence.</p><h2>Route groups</h2><pre><code>app.group('/admin', [auth.requireRole('admin')], (r) => {
+app.post('/login', limiter, AuthController.login);</code></pre>
+    <p>
+      Middleware either sends a response, calls <code>next()</code>, or passes
+      an error with <code>next(err)</code>. Order matters: each middleware runs
+      in sequence.
+    </p>
+    <h2>Route groups</h2>
+    <pre><code>app.group('/admin', [auth.requireRole('admin')], (r) => {
   r.get('/', AdminController.dashboard);
   r.get('/users', AdminController.usersIndex);
   r.delete('/users/:id', AdminController.usersDestroy);
-});</code></pre><h2>Request and response helpers</h2><div class="table-wrap"><table><thead><tr><th>API</th><th>Purpose</th></tr></thead><tbody><tr><td><code>req.params</code></td><td>Named route parameters</td></tr><tr><td><code>req.query</code></td><td>Parsed query string</td></tr><tr><td><code>req.body</code></td><td>Parsed JSON or URL-encoded body</td></tr><tr><td><code>req.session</code></td><td>Server-side session methods</td></tr><tr><td><code>res.render(view, data)</code></td><td>Render a template</td></tr><tr><td><code>res.json(obj)</code></td><td>Send JSON</td></tr><tr><td><code>res.redirect(path)</code></td><td>Redirect to a local path</td></tr></tbody></table></div><div class="callout">Request bodies support JSON and URL-encoded forms. Multipart file uploads are not currently provided by the framework.</div><div class="callout"><strong>Project status:</strong> P.O.W.E.R. 2.0 is under active development. Verify integrations and follow the security and deployment guidance before production use.</div><p>Source documentation: <a class="inline" href="https://github.com/OrpanAp/power-2.0/tree/main/docs" target="_blank" rel="noreferrer">docs/ in the P.O.W.E.R. 2.0 repository ↗</a></p></main></div><include type="html" path="components/site-footer.html"></include>
+});</code></pre>
+    <h2>Request and response helpers</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>API</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>req.params</code></td>
+            <td>Named route parameters</td>
+          </tr>
+          <tr>
+            <td><code>req.query</code></td>
+            <td>Parsed query string</td>
+          </tr>
+          <tr>
+            <td><code>req.body</code></td>
+            <td>Parsed JSON or URL-encoded body</td>
+          </tr>
+          <tr>
+            <td><code>req.session</code></td>
+            <td>Server-side session methods</td>
+          </tr>
+          <tr>
+            <td><code>res.render(view, data)</code></td>
+            <td>Render a template</td>
+          </tr>
+          <tr>
+            <td><code>res.json(obj)</code></td>
+            <td>Send JSON</td>
+          </tr>
+          <tr>
+            <td><code>res.redirect(path)</code></td>
+            <td>Redirect to a local path</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      Request bodies support JSON and URL-encoded forms. Multipart file uploads
+      are not currently provided by the framework.
+    </div>
+    <div class="callout">
+      <strong>Project status:</strong> P.O.W.E.R. 2.0 is under active
+      development. Verify integrations and follow the security and deployment
+      guidance before production use.
+    </div>
+    <p>
+      Source documentation:
+      <a
+        class="inline"
+        href="https://github.com/OrpanAp/power-2.0/tree/main/docs"
+        target="_blank"
+        rel="noreferrer"
+        >docs/ in the P.O.W.E.R. 2.0 repository ↗</a
+      >
+    </p>
+  </main>
+</div>
+<include type="html" path="components/site-footer.html"></include>
