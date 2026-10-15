@@ -20,61 +20,78 @@ class App {
         await App.Route(this.root, this.pages, this.authenticate);
     }
 
+    static SetTheme(theme) {
+        const nextTheme = theme === "dark" ? "dark" : "light";
+        const root = document.documentElement;
+
+        // Set both the attribute and native color-scheme so CSS variables,
+        // form controls, and browser-native surfaces follow the same choice.
+        root.setAttribute("data-theme", nextTheme);
+        root.style.colorScheme = nextTheme;
+
+        document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            const isDark = nextTheme === "dark";
+            button.textContent = isDark ? "☀ Light mode" : "☾ Dark mode";
+            button.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+            button.setAttribute("aria-pressed", String(isDark));
+            button.title = isDark ? "Switch to light theme" : "Switch to dark theme";
+        });
+    }
+
     static ApplyThemePreference() {
         let savedTheme = null;
         try {
             savedTheme = localStorage.getItem("power-theme");
         } catch {
-            // If storage is unavailable, fall back to the operating-system preference.
+            // Storage may be disabled by the browser.
         }
 
-        const theme = savedTheme === "light" || savedTheme === "dark"
-            ? savedTheme
-            : (window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        let preferredTheme = "light";
+        try {
+            preferredTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        } catch {
+            // Use light when system preference cannot be read.
+        }
 
-        document.documentElement.dataset.theme = theme;
+        App.SetTheme(savedTheme === "light" || savedTheme === "dark" ? savedTheme : preferredTheme);
     }
 
     static ApplyThemeControl() {
         const header = document.querySelector("header");
         if (!header) return;
 
+        const nav = header.querySelector("nav");
         const host = header.querySelector(".actions")
             || header.querySelector(".topnav")
             || header.querySelector(".nav")
-            || header.querySelector("nav.shell");
+            || nav;
 
         if (!host) return;
 
-        const oldButton = header.querySelector("[data-theme-toggle]");
-        if (oldButton) oldButton.remove();
+        // Avoid duplicate controls when the route changes in the single-page app.
+        const existingButton = header.querySelector("[data-theme-toggle]");
+        if (existingButton) existingButton.remove();
 
         const button = document.createElement("button");
         button.type = "button";
         button.className = "theme-toggle";
         button.setAttribute("data-theme-toggle", "");
         button.setAttribute("aria-live", "polite");
+        button.setAttribute("aria-pressed", String(document.documentElement.dataset.theme === "dark"));
 
-        const updateButton = () => {
-            const isDark = document.documentElement.dataset.theme === "dark";
-            button.textContent = isDark ? "☀ Light mode" : "☾ Dark mode";
-            button.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
-            button.title = isDark ? "Switch to light theme" : "Switch to dark theme";
-        };
-
-        updateButton();
         button.addEventListener("click", () => {
-            const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-            document.documentElement.dataset.theme = nextTheme;
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const nextTheme = currentTheme === "dark" ? "light" : "dark";
+            App.SetTheme(nextTheme);
             try {
                 localStorage.setItem("power-theme", nextTheme);
             } catch {
-                // The toggle still works for this page view if storage is unavailable.
+                // The theme still changes for the current page when storage is disabled.
             }
-            updateButton();
         });
 
         host.appendChild(button);
+        App.SetTheme(document.documentElement.dataset.theme || "light");
     }
 
     static async TemplateBuilder(routes) {
