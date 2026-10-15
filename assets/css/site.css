@@ -93,3 +93,20 @@ h1 span,
   color:var(--lime-text)!important;
 }
 /* Terminal/code accents sit on a dark surface, so preserve the brighter lime there. */
+
+
+/* High-contrast lime accents: bright lime remains for filled UI, not small text. */
+:root[data-theme="light"]{--lime-text:#365314}
+:root[data-theme="dark"]{--lime-text:#c6ff5f}
+:root[data-theme="light"] .announce b,
+:root[data-theme="light"] h1 span,
+:root[data-theme="light"] .checks span:before,
+:root[data-theme="light"] .kicker{
+  color:#365314!important;
+}
+:root[data-theme="dark"] .announce b,
+:root[data-theme="dark"] h1 span,
+:root[data-theme="dark"] .checks span:before,
+:root[data-theme="dark"] .kicker{
+  color:#c6ff5f!important;
+}
