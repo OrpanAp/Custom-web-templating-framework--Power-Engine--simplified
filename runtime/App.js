@@ -56,76 +56,111 @@ class App {
         App.SetTheme(savedTheme === "light" || savedTheme === "dark" ? savedTheme : preferredTheme);
     }
 
+    /* One controller for the hamburger menu.
+       - Home (nav.shell): the button opens a dropdown of the page links.
+       - Docs (.topnav / .nav): there is NO top dropdown. The docs navigation
+         lives in the sidebar, and on small screens the button just shows/hides it.
+       Page templates must NOT bind their own menu handlers. */
     static ApplyResponsiveNavigation() {
+        App._nav = null;
+
         const header = document.querySelector("header");
         if (!header) return;
 
-        const container = header.querySelector(".topnav, .nav");
-        const links = header.querySelector(".toplinks, .navlinks");
-        if (!container || !links) return;
+        const container = header.querySelector(".topnav, .nav, nav.shell");
+        if (!container) return;
 
-        // Reuse the hamburger already present in each page template.
-        // Never create another menu button.
-        const extraMenu = container.querySelector("[data-global-menu]");
-        if (extraMenu) extraMenu.remove();
-        const menu = container.querySelector("#menu-toggle, #menu, .menu");
+        const menu = container.querySelector(":scope > #menu-toggle, :scope > #menu, :scope > .menu, :scope > .menu-toggle");
         if (!menu) return;
 
-        Object.assign(container.style, { position: "relative", minWidth: "0" });
-        Object.assign(links.style, { flexWrap: "wrap", alignItems: "center" });
+        const links = container.querySelector(":scope > .toplinks, :scope > .navlinks, :scope > .links");
+        const sidebar = document.querySelector("#sidebar, aside.side");
+        const target = links || sidebar; // the single thing this button controls
+        if (!target) return;
 
-        const applyLayout = () => {
-            const compact = true; // Keep navigation collapsed at every viewport width.
-            menu.style.display = "inline-flex";
-            Object.assign(menu.style, {
-                alignItems: "center", justifyContent: "center", flex: "0 0 auto",
-                whiteSpace: "nowrap", minHeight: "40px", padding: "9px 13px",
-                border: "1px solid var(--line)", borderRadius: "10px",
-                background: "var(--panel)", color: "var(--ink)",
-                fontWeight: "800", cursor: "pointer"
-            });
-            const open = menu.getAttribute("aria-expanded") === "true";
-            if (!compact) {
-                links.style.display = "flex";
-                links.style.position = "static";
-                links.style.flexDirection = "row";
-                links.style.width = "auto";
-                return;
-            }
-            links.style.display = open ? "flex" : "none";
-            Object.assign(links.style, {
-                position: "absolute", top: "calc(100% + 1px)", left: "0", right: "0",
-                width: "100%", zIndex: "60", flexDirection: "column",
-                alignItems: "stretch", gap: "0", padding: "10px",
-                border: "1px solid var(--line)", borderRadius: "0 0 14px 14px",
-                background: "var(--panel)", boxShadow: "0 18px 42px #0002",
-                maxHeight: "calc(100vh - 100px)", overflowY: "auto"
-            });
-            links.querySelectorAll("a").forEach(a => {
-                Object.assign(a.style, { display: "block", padding: "11px 13px", borderRadius: "9px" });
-            });
+        const force = (el, props) => {
+            for (const [name, value] of Object.entries(props)) el.style.setProperty(name, value, "important");
         };
 
-        if (!menu.dataset.responsiveBound) {
-            menu.dataset.responsiveBound = "true";
-            menu.addEventListener("click", () => {
-                // Existing page scripts may also toggle a documentation sidebar.
-                // Keep that behavior, while this same button opens/closes the top links.
-                const open = links.style.display === "none" || !links.style.display;
+        if (!target.id) target.id = "site-nav-links";
+        menu.setAttribute("aria-controls", target.id);
+        menu.setAttribute("type", "button");
+
+        let isOpen = false;
+        let setOpen;
+
+        if (links) {
+            // Home page dropdown, collapsed at every width.
+            const brand = container.querySelector(":scope > .brand");
+            const actions = container.querySelector(":scope > .actions");
+            force(container, { position: "relative", "min-width": "0" });
+            if (brand) force(brand, { flex: "1 1 auto", "min-width": "0" });
+            if (actions) force(actions, { display: "none" });
+            force(menu, {
+                display: "inline-flex", "align-items": "center", "justify-content": "center",
+                flex: "0 0 auto", "white-space": "nowrap", "min-height": "40px", padding: "9px 13px",
+                border: "1px solid var(--line)", "border-radius": "10px",
+                background: "var(--panel)", color: "var(--ink)", "font-weight": "800", cursor: "pointer"
+            });
+            force(links, {
+                position: "absolute", top: "calc(100% + 1px)", left: "0", right: "0", width: "auto",
+                "z-index": "60", "flex-direction": "column", "align-items": "stretch", "flex-wrap": "nowrap",
+                gap: "0", padding: "10px", border: "1px solid var(--line)", "border-radius": "0 0 14px 14px",
+                background: "var(--panel)", "box-shadow": "0 18px 42px #0002",
+                "max-height": "calc(100vh - 100px)", "overflow-y": "auto"
+            });
+            links.querySelectorAll("a").forEach(a => {
+                force(a, { display: "block", padding: "11px 13px", "border-radius": "9px", "line-height": "1.4" });
+            });
+            setOpen = (open) => {
+                isOpen = open;
+                container.classList.toggle("open", open);
                 menu.setAttribute("aria-expanded", String(open));
                 menu.textContent = open ? "✕ Close" : "☰ Menu";
-                applyLayout();
-            });
-            links.addEventListener("click", event => {
-                if (event.target.closest("a")) {
-                    menu.setAttribute("aria-expanded", "false");
-                    menu.textContent = "☰ Menu";
-                    applyLayout();
-                }
-            });
+                force(links, { display: open ? "flex" : "none" });
+            };
+        } else {
+            // Docs pages: the stylesheet shows the button only on small screens,
+            // where the sidebar is hidden until `.open` is set.
+            const brand = container.querySelector(":scope > .brand");
+            if (brand) force(brand, { flex: "1 1 auto", "min-width": "0" });
+            setOpen = (open) => {
+                isOpen = open;
+                menu.setAttribute("aria-expanded", String(open));
+                menu.textContent = open ? "✕ Close" : "☰ Menu";
+                sidebar.classList.toggle("open", open);
+            };
         }
 
-        applyLayout();
+        setOpen(false);
+        menu.addEventListener("click", () => setOpen(!isOpen));
+        target.addEventListener("click", (event) => {
+            if (event.target.closest("a")) setOpen(false);
+        });
+
+        App._nav = {
+            menu,
+            isOpen: () => isOpen,
+            close: () => setOpen(false),
+            contains: (node) => container.contains(node) || target.contains(node)
+        };
+
+        // Global handlers are bound once; they always act on the current page's menu.
+        if (!App._navGlobalBound) {
+            App._navGlobalBound = true;
+            document.addEventListener("keydown", (event) => {
+                const nav = App._nav;
+                if (event.key === "Escape" && nav && nav.isOpen()) {
+                    nav.close();
+                    nav.menu.focus();
+                }
+            });
+            document.addEventListener("click", (event) => {
+                const nav = App._nav;
+                if (!nav || !nav.isOpen() || nav.contains(event.target)) return;
+                nav.close();
+            });
+        }
     }
 
     static ApplyThemeControl() {
@@ -163,6 +198,12 @@ class App {
         });
 
         host.appendChild(button);
+
+        // Keep the theme toggle next to the hamburger (right side of the header).
+        const menuButton = header.querySelector(":scope #menu-toggle, :scope #menu, :scope .menu, :scope .menu-toggle");
+        if (menuButton && menuButton.parentElement) {
+            menuButton.parentElement.insertBefore(button, menuButton);
+        }
         App.SetTheme(document.documentElement.dataset.theme || "light");
     }
 

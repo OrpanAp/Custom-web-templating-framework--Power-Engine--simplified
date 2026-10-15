@@ -351,3 +351,27 @@ html[data-theme="dark"] body button.copy {
     color: var(--ink);
   }
 }
+
+/* Docs navigation: Home + collapsible POWER 2.0 / POWER 1.0 groups */
+.side details,.sidebar details{margin:4px 0}
+.side summary,.sidebar summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;list-style:none;padding:8px 10px;border-radius:9px;font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.side summary::-webkit-details-marker,.sidebar summary::-webkit-details-marker{display:none}
+.side summary::after,.sidebar summary::after{content:"▾";color:var(--muted)}
+.side details[open]>summary::after,.sidebar details[open]>summary::after{content:"▴"}
+.side summary:hover,.sidebar summary:hover{background:var(--panel2)}
+.side .sub,.sidebar .sub{margin:2px 0 6px 12px;padding-left:8px;border-left:1px solid var(--line)}
+.side a.src,.sidebar a.src{color:light-dark(#526d2c,#c6ff5f);font-weight:800}
+.sidebar .sidebar-nav{grid-column:1/-1;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+
+/* Docs (POWER 2.0 + 1.0): at <=850px the sidebar collapses behind the hamburger.
+   The button is visible exactly when the sidebar is hidden. */
+header .topnav > .menu,header .nav > .menu{display:none}
+@media(max-width:850px){
+  header .topnav > .menu,header .nav > .menu{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;white-space:nowrap;min-height:40px;padding:9px 13px;font-weight:800;cursor:pointer}
+  header .nav > .btn{display:none}
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;max-height:none;display:none}
+  .side.open{display:block}
+  .sidebar{position:static;max-height:none;display:none}
+  .sidebar.open{display:grid}
+}
