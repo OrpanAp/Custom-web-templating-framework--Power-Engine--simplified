@@ -1,7 +1,7 @@
 import App from "./runtime/App.js";
 
 const siteProps = {
-    frameworkName: "P.O.W.E.R.",
+    frameworkName: "P.O.W.E.R. - 2.0",
     version: "2.0"
 };
 
