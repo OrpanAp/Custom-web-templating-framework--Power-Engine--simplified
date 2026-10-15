@@ -29,3 +29,16 @@ pre.syntax-block .syn-attr{color:#f3c98b}
 pre.syntax-block .syn-prompt{color:#c6ff5f;user-select:none}
 pre.syntax-block .syn-command{color:#e8f1ed}
 pre.syntax-block .syn-operator{color:#f0a7c5}
+
+
+/* Explicit theme tokens for the site-wide theme switcher. */
+:root[data-theme="light"]{color-scheme:light;--bg:#f4f6f4;--panel:#ffffff;--panel2:#edf1ee;--ink:#121a18;--muted:#53635c;--line:#d5dfd9;--lime:#c6ff5f;--limeink:#15200b}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0b0e12;--panel:#12171d;--panel2:#171e25;--ink:#f3f7f5;--muted:#a7b4ae;--line:#29343a;--lime:#c6ff5f;--limeink:#15200b}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink);font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+.theme-toggle:hover{border-color:var(--lime);transform:translateY(-1px)}
+.theme-toggle:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+header .topnav .theme-toggle,header .nav .theme-toggle{margin-left:8px;flex-shrink:0}
+header nav.shell .actions .theme-toggle{padding-inline:12px}
+.downloadbox>div{max-width:650px}
+.downloadbox p{color:#26351b;opacity:1;font-size:14px;line-height:1.8;font-weight:500;max-width:560px;text-wrap:pretty}
+@media(max-width:560px){.theme-toggle{min-height:36px;padding:7px 9px;font-size:10px}header .topnav .theme-toggle,header .nav .theme-toggle{margin-left:0}.downloadbox p{font-size:13px;line-height:1.75}}
