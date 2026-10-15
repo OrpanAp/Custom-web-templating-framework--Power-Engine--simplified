@@ -281,3 +281,73 @@ html[data-theme="dark"] body button.copy {
     right: 0;
   }
 }
+
+
+/* Use the same hamburger navigation on every screen wider than 560px too.
+   Keep the header to just the brand and menu control so it cannot collide. */
+@media (min-width: 561px) {
+  header nav.shell {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 16px;
+    min-width: 0;
+  }
+  header nav.shell > .links {
+    display: none !important;
+  }
+  header nav.shell > .menu-toggle {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    min-height: 40px;
+    padding: 9px 13px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  header nav.shell > .actions {
+    display: none !important;
+  }
+  header nav.shell > .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: calc(100% - 110px);
+  }
+  header nav.shell > .brand > span:last-child {
+    min-width: 0;
+  }
+  header nav.shell.open > .links {
+    display: flex !important;
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 0 0 16px 16px;
+    background: var(--panel);
+    box-shadow: 0 18px 42px #0002;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  header nav.shell.open > .links a {
+    display: block;
+    padding: 11px 13px;
+    border-radius: 9px;
+    line-height: 1.4;
+  }
+  header nav.shell.open > .links a:hover {
+    background: var(--panel2);
+    color: var(--ink);
+  }
+}
