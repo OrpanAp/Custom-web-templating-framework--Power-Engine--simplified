@@ -110,3 +110,39 @@ h1 span,
 :root[data-theme="dark"] .kicker{
   color:#c6ff5f!important;
 }
+
+
+/* Contrast fix for small lime accent text on the POWER 2.0 landing page.
+   The announcement and copy buttons sit on light surfaces, unlike the terminal. */
+:root[data-theme="light"] .announce b,
+:root[data-theme="light"] .copy,
+:root[data-theme="light"] .kicker,
+:root[data-theme="light"] h1 span,
+:root[data-theme="light"] .checks span:before,
+html[data-theme="light"] .announce b,
+html[data-theme="light"] .copy,
+html[data-theme="light"] .kicker,
+html[data-theme="light"] h1 span,
+html[data-theme="light"] .checks span:before {
+  color: #365314 !important;
+}
+:root[data-theme="dark"] .announce b,
+:root[data-theme="dark"] .copy,
+:root[data-theme="dark"] .kicker,
+:root[data-theme="dark"] h1 span,
+:root[data-theme="dark"] .checks span:before,
+html[data-theme="dark"] .announce b,
+html[data-theme="dark"] .copy,
+html[data-theme="dark"] .kicker,
+html[data-theme="dark"] h1 span,
+html[data-theme="dark"] .checks span:before {
+  color: #c6ff5f !important;
+}
+/* Also works if the browser's color-scheme is switched without data-theme. */
+.announce b,
+.copy,
+.kicker,
+h1 span,
+.checks span:before {
+  color: light-dark(#365314, #c6ff5f);
+}
