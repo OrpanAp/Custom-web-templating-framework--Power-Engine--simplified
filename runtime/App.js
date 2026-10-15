@@ -8,6 +8,7 @@ class App {
     }
 
     async Run() {
+        App.ApplyThemePreference();
         if(!this.routes) throw new Error(`Error: Undefined routes`);
         if(typeof this.routes !== 'object') throw new Error(`Type Error: Required route type of: "object"`);
        
@@ -17,6 +18,63 @@ class App {
         await App.IdentifyInlineCommands(this.pages);
         
         await App.Route(this.root, this.pages, this.authenticate);
+    }
+
+    static ApplyThemePreference() {
+        let savedTheme = null;
+        try {
+            savedTheme = localStorage.getItem("power-theme");
+        } catch {
+            // If storage is unavailable, fall back to the operating-system preference.
+        }
+
+        const theme = savedTheme === "light" || savedTheme === "dark"
+            ? savedTheme
+            : (window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+
+        document.documentElement.dataset.theme = theme;
+    }
+
+    static ApplyThemeControl() {
+        const header = document.querySelector("header");
+        if (!header) return;
+
+        const host = header.querySelector(".actions")
+            || header.querySelector(".topnav")
+            || header.querySelector(".nav")
+            || header.querySelector("nav.shell");
+
+        if (!host) return;
+
+        const oldButton = header.querySelector("[data-theme-toggle]");
+        if (oldButton) oldButton.remove();
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "theme-toggle";
+        button.setAttribute("data-theme-toggle", "");
+        button.setAttribute("aria-live", "polite");
+
+        const updateButton = () => {
+            const isDark = document.documentElement.dataset.theme === "dark";
+            button.textContent = isDark ? "☀ Light mode" : "☾ Dark mode";
+            button.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+            button.title = isDark ? "Switch to light theme" : "Switch to dark theme";
+        };
+
+        updateButton();
+        button.addEventListener("click", () => {
+            const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+            document.documentElement.dataset.theme = nextTheme;
+            try {
+                localStorage.setItem("power-theme", nextTheme);
+            } catch {
+                // The toggle still works for this page view if storage is unavailable.
+            }
+            updateButton();
+        });
+
+        host.appendChild(button);
     }
 
     static async TemplateBuilder(routes) {
@@ -368,6 +426,7 @@ class App {
         root.appendChild(fragment);
 
         await this.LoadScriptForThisPage(scripts, root);
+        this.ApplyThemeControl();
     }
 }
 
