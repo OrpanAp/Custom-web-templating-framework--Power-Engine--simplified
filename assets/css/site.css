@@ -82,3 +82,14 @@ header nav.shell .actions .theme-toggle{padding-inline:12px}
     line-height:1.75!important;
   }
 }
+
+
+/* Keep the bright lime fill, but use a darker accent for text on light surfaces. */
+:root[data-theme="light"]{--lime-text:#4f751a}
+:root[data-theme="dark"]{--lime-text:var(--lime)}
+.announce b,
+h1 span,
+.checks span:before{
+  color:var(--lime-text)!important;
+}
+/* Terminal/code accents sit on a dark surface, so preserve the brighter lime there. */
