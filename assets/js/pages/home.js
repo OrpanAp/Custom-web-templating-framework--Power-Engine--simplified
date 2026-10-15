@@ -5,6 +5,17 @@ Object.assign(nav.style,{position:'relative',display:'flex',flexWrap:'nowrap',ju
 Object.assign(links.style,{display:'none',position:'absolute',top:'calc(100% + 1px)',left:'0',right:'0',zIndex:'50',flexDirection:'column',alignItems:'stretch',gap:'0',padding:'10px',border:'1px solid var(--line)',borderRadius:'0 0 16px 16px',background:'var(--panel)',boxShadow:'0 18px 42px #0002',maxHeight:'calc(100vh - 100px)',overflowY:'auto'});
 Object.assign(menu.style,{display:'inline-flex',alignItems:'center',justifyContent:'center',flex:'0 0 auto',whiteSpace:'nowrap',minHeight:'40px',padding:'9px 13px',border:'1px solid var(--line)',borderRadius:'10px',background:'var(--panel)',color:'var(--ink)',cursor:'pointer'});
 actions.style.display='none';
+/* The shared POWER runtime inserts the theme toggle into .actions.
+   Move it beside the hamburger before hiding the remaining header actions. */
+function placeThemeToggle(){
+  const theme=nav.querySelector('[data-theme-toggle]');
+  if(!theme)return;
+  if(theme.parentElement!==nav)nav.insertBefore(theme,menu);
+  Object.assign(theme.style,{display:'inline-flex',alignItems:'center',justifyContent:'center',flex:'0 0 auto',whiteSpace:'nowrap',minHeight:'40px',padding:'9px 12px',border:'1px solid var(--line)',borderRadius:'10px',background:'var(--panel)',color:'var(--ink)',cursor:'pointer',fontSize:'12px',fontWeight:'800'});
+}
+placeThemeToggle();
+new MutationObserver(placeThemeToggle).observe(nav,{childList:true,subtree:true});
+
 const brand=nav.querySelector('.brand');Object.assign(brand.style,{flex:'1 1 auto',minWidth:'0',maxWidth:'calc(100% - 110px)'});
 function setMenu(open){nav.classList.toggle('open',open);menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'✕ Close':'☰ Menu';links.style.display=open?'flex':'none';}
 menu.addEventListener('click',()=>setMenu(!nav.classList.contains('open')));
