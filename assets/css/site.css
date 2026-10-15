@@ -42,3 +42,23 @@ header nav.shell .actions .theme-toggle{padding-inline:12px}
 .downloadbox>div{max-width:650px}
 .downloadbox p{color:#26351b;opacity:1;font-size:14px;line-height:1.8;font-weight:500;max-width:560px;text-wrap:pretty}
 @media(max-width:560px){.theme-toggle{min-height:36px;padding:7px 9px;font-size:10px}header .topnav .theme-toggle,header .nav .theme-toggle{margin-left:0}.downloadbox p{font-size:13px;line-height:1.75}}
+
+
+/* Homepage download banner copy: dedicated class avoids inherited paragraph styles. */
+.downloadbox .download-description{
+  display:block;
+  margin:12px 0 0;
+  max-width:560px;
+  color:#26351b !important;
+  opacity:1 !important;
+  font-size:14px !important;
+  font-weight:550;
+  line-height:1.8;
+  text-wrap:pretty;
+}
+@media(max-width:560px){
+  .downloadbox .download-description{
+    font-size:13px !important;
+    line-height:1.75;
+  }
+}
