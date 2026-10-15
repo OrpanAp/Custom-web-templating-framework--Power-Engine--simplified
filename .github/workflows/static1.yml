@@ -2,7 +2,7 @@ name: Deploy POWER Engine website
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main", "master"]
   workflow_dispatch:
 
 permissions:
