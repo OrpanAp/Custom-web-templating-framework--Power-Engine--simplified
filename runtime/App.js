@@ -60,68 +60,57 @@ class App {
         const header = document.querySelector("header");
         if (!header) return;
 
-        const nav = header.querySelector("nav");
         const container = header.querySelector(".topnav, .nav");
         const links = header.querySelector(".toplinks, .navlinks");
         if (!container || !links) return;
 
-        // The landing page has its own carefully tuned menu controller.
-        if (document.getElementById("menu-toggle")) return;
+        // Reuse the hamburger already present in each page template.
+        // Never create another menu button.
+        const extraMenu = container.querySelector("[data-global-menu]");
+        if (extraMenu) extraMenu.remove();
+        const menu = container.querySelector("#menu-toggle, #menu, .menu");
+        if (!menu) return;
 
-        let menu = container.querySelector("[data-global-menu]");
-        if (!menu) {
-            menu = document.createElement("button");
-            menu.type = "button";
-            menu.setAttribute("data-global-menu", "");
-            menu.setAttribute("aria-expanded", "false");
-            menu.textContent = "☰ Menu";
-            menu.style.cssText = "display:none;align-items:center;justify-content:center;flex:0 0 auto;white-space:nowrap;min-height:40px;padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);font-weight:800;cursor:pointer";
-            container.appendChild(menu);
-        }
-
-        Object.assign(container.style, { position: "relative", flexWrap: "wrap", minWidth: "0" });
+        Object.assign(container.style, { position: "relative", minWidth: "0" });
         Object.assign(links.style, { flexWrap: "wrap", alignItems: "center" });
 
         const applyLayout = () => {
-            const compact = true; // Keep the navigation collapsed on every viewport, matching the home page.
-            menu.style.display = compact ? "inline-flex" : "none";
+            const compact = true; // Keep navigation collapsed at every viewport width.
+            menu.style.display = "inline-flex";
+            Object.assign(menu.style, {
+                alignItems: "center", justifyContent: "center", flex: "0 0 auto",
+                whiteSpace: "nowrap", minHeight: "40px", padding: "9px 13px",
+                border: "1px solid var(--line)", borderRadius: "10px",
+                background: "var(--panel)", color: "var(--ink)",
+                fontWeight: "800", cursor: "pointer"
+            });
+            const open = menu.getAttribute("aria-expanded") === "true";
             if (!compact) {
                 links.style.display = "flex";
                 links.style.position = "static";
                 links.style.flexDirection = "row";
                 links.style.width = "auto";
-                menu.setAttribute("aria-expanded", "false");
-                menu.textContent = "☰ Menu";
                 return;
             }
-            const open = menu.getAttribute("aria-expanded") === "true";
             links.style.display = open ? "flex" : "none";
-            links.style.position = "absolute";
-            links.style.top = "calc(100% + 1px)";
-            links.style.left = "0";
-            links.style.right = "0";
-            links.style.width = "100%";
-            links.style.zIndex = "60";
-            links.style.flexDirection = "column";
-            links.style.alignItems = "stretch";
-            links.style.gap = "0";
-            links.style.padding = "10px";
-            links.style.border = "1px solid var(--line)";
-            links.style.borderRadius = "0 0 14px 14px";
-            links.style.background = "var(--panel)";
-            links.style.boxShadow = "0 18px 42px #0002";
-            links.style.maxHeight = "calc(100vh - 100px)";
-            links.style.overflowY = "auto";
+            Object.assign(links.style, {
+                position: "absolute", top: "calc(100% + 1px)", left: "0", right: "0",
+                width: "100%", zIndex: "60", flexDirection: "column",
+                alignItems: "stretch", gap: "0", padding: "10px",
+                border: "1px solid var(--line)", borderRadius: "0 0 14px 14px",
+                background: "var(--panel)", boxShadow: "0 18px 42px #0002",
+                maxHeight: "calc(100vh - 100px)", overflowY: "auto"
+            });
             links.querySelectorAll("a").forEach(a => {
-                a.style.display = "block";
-                a.style.padding = "11px 13px";
-                a.style.borderRadius = "9px";
+                Object.assign(a.style, { display: "block", padding: "11px 13px", borderRadius: "9px" });
             });
         };
 
-        if (!menu.dataset.bound) {
-            menu.dataset.bound = "true";
+        if (!menu.dataset.responsiveBound) {
+            menu.dataset.responsiveBound = "true";
             menu.addEventListener("click", () => {
+                // Existing page scripts may also toggle a documentation sidebar.
+                // Keep that behavior, while this same button opens/closes the top links.
                 const open = menu.getAttribute("aria-expanded") !== "true";
                 menu.setAttribute("aria-expanded", String(open));
                 menu.textContent = open ? "✕ Close" : "☰ Menu";
@@ -134,7 +123,6 @@ class App {
                     applyLayout();
                 }
             });
-            window.addEventListener("resize", applyLayout);
         }
 
         applyLayout();
