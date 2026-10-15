@@ -83,7 +83,7 @@ class App {
         Object.assign(links.style, { flexWrap: "wrap", alignItems: "center" });
 
         const applyLayout = () => {
-            const compact = window.matchMedia("(max-width: 760px)").matches;
+            const compact = true; // Keep the navigation collapsed on every viewport, matching the home page.
             menu.style.display = compact ? "inline-flex" : "none";
             if (!compact) {
                 links.style.display = "flex";
