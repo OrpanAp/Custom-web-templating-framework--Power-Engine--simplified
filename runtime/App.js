@@ -111,7 +111,7 @@ class App {
             menu.addEventListener("click", () => {
                 // Existing page scripts may also toggle a documentation sidebar.
                 // Keep that behavior, while this same button opens/closes the top links.
-                const open = menu.getAttribute("aria-expanded") !== "true";
+                const open = links.style.display === "none" || !links.style.display;
                 menu.setAttribute("aria-expanded", String(open));
                 menu.textContent = open ? "✕ Close" : "☰ Menu";
                 applyLayout();
