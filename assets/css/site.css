@@ -146,3 +146,18 @@ h1 span,
 .checks span:before {
   color: light-dark(#365314, #c6ff5f);
 }
+
+
+/* Final theme contrast override: target the exact rendered homepage elements. */
+html[data-theme="light"] body .announce b,
+html[data-theme="light"] body .codefoot button.copy,
+html[data-theme="light"] body button.copy {
+  color: #365314 !important;
+  -webkit-text-fill-color: #365314 !important;
+}
+html[data-theme="dark"] body .announce b,
+html[data-theme="dark"] body .codefoot button.copy,
+html[data-theme="dark"] body button.copy {
+  color: #c6ff5f !important;
+  -webkit-text-fill-color: #c6ff5f !important;
+}
