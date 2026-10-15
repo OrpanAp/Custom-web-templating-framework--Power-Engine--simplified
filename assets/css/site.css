@@ -224,3 +224,60 @@ html[data-theme="dark"] body button.copy {
     display: none;
   }
 }
+
+
+/* Navigation repair for tablet and narrow-desktop widths (561px–1240px). */
+@media (min-width: 561px) and (max-width: 1240px) {
+  header nav.shell {
+    box-sizing: border-box;
+    width: min(1120px, calc(100% - 32px));
+    min-width: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  header nav.shell > .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: calc(100% - 150px);
+  }
+  header nav.shell > .brand > span:last-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  header nav.shell > .brand small {
+    display: block;
+    max-width: 100%;
+    font-size: 9px;
+    letter-spacing: .08em;
+    line-height: 1.35;
+  }
+  header nav.shell > .menu-toggle {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    min-height: 38px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  header nav.shell > .actions {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+}
+@media (min-width: 561px) and (max-width: 900px) {
+  header nav.shell > .brand {
+    max-width: calc(100% - 110px);
+  }
+  header nav.shell > .actions {
+    display: none;
+  }
+  header nav.shell.open > .links {
+    left: 0;
+    right: 0;
+  }
+}
